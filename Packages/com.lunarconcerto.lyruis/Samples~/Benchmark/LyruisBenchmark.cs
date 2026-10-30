@@ -33,6 +33,9 @@ namespace LunarConcerto.Lyruis.Samples
             string path = Path.Combine(Application.persistentDataPath, "lyruis-benchmark.json");
             File.WriteAllText(path, RunSuite());
             Debug.Log("Lyruis benchmark: " + path);
+            string nestedPath = Path.Combine(Application.persistentDataPath, "lyruis-nested-benchmark.json");
+            File.WriteAllText(nestedPath, NestedLayoutBenchmark.RunSuite());
+            Debug.Log("Lyruis nested benchmark: " + nestedPath);
         }
         public static string RunSuite()
         {

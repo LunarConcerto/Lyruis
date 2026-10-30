@@ -9,3 +9,5 @@ Unity 2022.3.62f3, Windows Editor.
 - All nine benchmark configurations produced zero geometry difference from their native uGUI counterparts. Raw timing report is retained beside this file.
 
 Not verified: other Unity versions, player builds, GC allocation rate, deeply nested performance, target-device rendering and automated sample import in a separate consumer project.
+
+Nested benchmark extension: all 8 configurations pass recursive geometry validation (0px difference), including both leaf resize states; Unity compilation and Console error check pass. Nested timings recorded in Edit mode separately from the original flat Play mode report.

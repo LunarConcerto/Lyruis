@@ -89,6 +89,8 @@ public class PanelSetup : MonoBehaviour
 
 参见[方法与实测](BenchmarkResults/README.md)和[原始 JSON](BenchmarkResults/editor-2022.3.json)。对比 HorizontalLayoutGroup、VerticalLayoutGroup、GridLayoutGroup，分别测试 10／100／1000 个子节点。测量同步强制重建，不代表渲染、静止帧、分配率或完整应用 FPS。Flow 没有纳入原生性能对照；结果仅适用于对应测试环境，不承诺普遍加速。
 
+另有[复杂嵌套测试](BenchmarkResults/nested.md)：3／5／7 层横竖交替的内容自适应容器，以及分支更多的宽树。每种结构分别测量重复重建和叶子尺寸变化后整树重建。在预热后及每个测量批次后检查根节点与全部后代，几何误差超过 0.01 像素则拒绝输出结果。开发工程使用 **Tools > Lyruis > Run Nested Benchmark And Save Report**；导入的 Benchmark 场景也会执行，并在平铺报告旁写入 `lyruis-nested-benchmark.json`。它不测量 Canvas 自动脏传播。
+
 ## 目录与开发
 
 ```text

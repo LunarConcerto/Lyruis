@@ -87,6 +87,8 @@ In this repository, imported samples already live under `Assets/Samples/Lyruis/0
 
 See [method and recorded results](BenchmarkResults/README.md) and [raw JSON](BenchmarkResults/editor-2022.3.json). HorizontalLayoutGroup, VerticalLayoutGroup and GridLayoutGroup are compared against equivalent Lyruis settings at 10/100/1000 children. It measures synchronous forced layout rebuilds, not rendering, idle frames, allocation rates or a full application's FPS. Flow has no equivalent native baseline here. Results are environment-specific; no universal speedup is claimed.
 
+The sample also runs a [complex nested benchmark](BenchmarkResults/nested.md): alternating horizontal/vertical content-sized containers at 3/5/7 levels, plus a wider tree. Each shape measures repeated rebuilds and leaf resizing with whole-tree rebuilds. It checks every descendant and the root before and after timed batches, rejecting geometry mismatches over 0.01 pixels. Use **Tools > Lyruis > Run Nested Benchmark And Save Report** in the development project; the imported sample writes `lyruis-nested-benchmark.json` beside the flat report. This measures explicit rebuilds, not automatic Canvas dirty propagation.
+
 ## Structure and development
 
 ```text

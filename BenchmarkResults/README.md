@@ -1,5 +1,7 @@
 # Benchmark / 性能对比
 
+This page records the flat-tree baseline. See [complex nested benchmark / 复杂嵌套测试](nested.md) for alternating-axis content-sized trees, including leaf resizing.
+
 Unity 2022.3.62f3, Windows Editor (Play mode), AMD Ryzen 9 9950X. Recorded 2026-10-31 (Asia/Hong_Kong).
 
 Measures LayoutRebuilder.ForceRebuildLayoutImmediate on separate flat trees, with identical 40x24 LayoutElement children. Root 800x600, top-left, no padding, gap 4. Grid: 10 columns. Native linear groups control both dimensions without force-expand; min equals preferred so neither baseline shrinks. Both trees have no Graphics or Canvas. Setup, geometry check and destruction are excluded.

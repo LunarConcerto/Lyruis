@@ -71,4 +71,11 @@ public static class LyruisDevelopment
         File.WriteAllText("BenchmarkResults/editor-2022.3.json", LyruisBenchmark.RunSuite());
         Debug.Log("Benchmark saved to BenchmarkResults/editor-2022.3.json");
     }
+    [MenuItem("Tools/Lyruis/Run Nested Benchmark And Save Report")]
+    public static void NestedBenchmark()
+    {
+        Directory.CreateDirectory("BenchmarkResults");
+        File.WriteAllText("BenchmarkResults/nested-editor-2022.3.json", NestedLayoutBenchmark.RunSuite());
+        Debug.Log("Nested benchmark saved to BenchmarkResults/nested-editor-2022.3.json");
+    }
 }
