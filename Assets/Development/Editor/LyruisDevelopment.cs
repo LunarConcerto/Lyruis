@@ -79,4 +79,35 @@ public static class LyruisDevelopment
         File.WriteAllText("BenchmarkResults/nested-editor-2022.3.json", NestedLayoutBenchmark.RunSuite());
         Debug.Log("Nested benchmark saved to BenchmarkResults/nested-editor-2022.3.json");
     }
+    [MenuItem("Tools/Lyruis/Generate Profiler Lab Scene")]
+    public static void GenerateProfilerLab()
+    {
+        const string path = "Assets/Samples/Lyruis/0.1.0/ProfilerLab/ProfilerLab.unity";
+        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        var previous = SceneManager.GetActiveScene();
+        var existing = SceneManager.GetSceneByPath(path);
+        if (existing.IsValid() && existing.isLoaded && existing.isDirty)
+            throw new System.InvalidOperationException("Save changes in the open Profiler Lab scene before regenerating it.");
+        bool reopen = previous.path == path;
+        var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+        try
+        {
+            SceneManager.SetActiveScene(scene);
+            var camera = new GameObject("Background Camera", typeof(Camera)).GetComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(.018f, .026f, .045f);
+            camera.cullingMask = 0;
+            new GameObject("Profiler Lab - select for workload settings", typeof(LyruisProfilerLab)).GetComponent<LyruisProfilerLab>().Build();
+            if (existing.IsValid() && existing.isLoaded) EditorSceneManager.CloseScene(existing, true);
+            if (!EditorSceneManager.SaveScene(scene, path)) throw new System.IO.IOException("Could not save Profiler Lab scene.");
+        }
+        finally
+        {
+            if (!reopen)
+            {
+                EditorSceneManager.CloseScene(scene, true);
+                if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
+            }
+        }
+        AssetDatabase.Refresh();
+    }
 }

@@ -11,3 +11,13 @@ Unity 2022.3.62f3 / Windows Editor. Runtime now uses an independent postorder tr
 - Scene initialization requeues roots after all intrinsic providers activate, avoiding premature editor requests leaving zero-sized items.
 
 Not verified: other Unity versions, player builds, GC rates, separate consumer-project sample import, automatic Canvas scheduling performance, and exhaustive equivalence of every archived edge case. The original source was inspected to preserve the computational model; archived source was not executed as a second test assembly.
+
+## Profiler Lab — 2026-10-31
+
+- Instrumented runtime compiles; existing 16 EditMode and 2 PlayMode tests pass.
+- Serialized ProfilerLab scene: 24 cards, 1,273 layout nodes, depth 6, 168 mutable text leaves.
+- Play-mode checks: automatic startup layout, button wiring, single-leaf/batch/forced rebuilds, and 1840/1380px root reflow. All nodes retain finite nonnegative dimensions.
+- Single and batch mutation ticks each produce one root completion when flushed.
+- Visibility uses CanvasGroup alpha; a Play-mode comparison of all 1,273 node rectangles found zero changed rectangles while hidden, preserving active Canvas/Text measurement context; it is not a complete UI CPU isolation switch. Detail toggle changes LyruisDiagnostics.DetailedProfiling.
+- Unity Profiler CPU frame data contains LyruisLab.WorkloadTick and Lyruis markers for rebuild, root lookup, child collection, tracker clearing, intrinsic measurement, container measurement, arrangement, rectangle writes, manual bounds and completion.
+- Game View inspected; 18 existing tests passed. No performance speedup claim is made for this instrumented revision, and no target-player build was run.

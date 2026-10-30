@@ -89,3 +89,7 @@ Runtime 拆分为 LyruisLayout（组件入口和层级事件）、LayoutSchedule
 不提供旧组件和字段的自动迁移。请重建代表性 prefab 并验证外观。本次也修正了上一版 Lyruis 适配方案：需要显式注册子节点、Grid 不再拉伸子项、None 与 Overlay 分开、Keep 使用 sizeDelta。贡献时请提供 Unity 版本、最小复现和预期几何。参见[更新记录](Packages/com.lunarconcerto.lyruis/CHANGELOG.md)。
 
 PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root request coalescing / 延迟尺寸计算与根请求合并).
+
+## Profiler 交互场景
+
+导入 **Profiler Lab**，打开 ProfilerLab.unity 后进入 Play。包含24张卡片、1,273个布局节点、6层嵌套、168个可变文本叶子，混合横竖排、Grid、Flow、None。屏幕按钮可切换静止、单叶子变化、批量变化、逐帧强制重建和根宽度变化；渲染和细粒度标记可分别切换。详见[Profiler 使用说明](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。开发菜单：Tools > Lyruis > Generate Profiler Lab Scene。

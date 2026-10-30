@@ -30,6 +30,10 @@ namespace LunarConcerto.Lyruis
         }
         private static void Flush()
         {
+            using (LyruisDiagnostics.Flush.Auto()) FlushCore();
+        }
+        private static void FlushCore()
+        {
             Canvas.willRenderCanvases -= Flush;
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall -= Flush;

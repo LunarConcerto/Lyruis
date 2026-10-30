@@ -47,9 +47,12 @@ namespace LunarConcerto.Lyruis
         {
             get
             {
-                var node = this;
-                while (node.transform.parent && node.transform.parent.TryGetComponent(out LyruisLayout parent) && parent.IsActive()) node = parent;
-                return node;
+                using (LyruisDiagnostics.Sample(LyruisDiagnostics.RootLookup))
+                {
+                    var node = this;
+                    while (node.transform.parent && node.transform.parent.TryGetComponent(out LyruisLayout parent) && parent.IsActive()) node = parent;
+                    return node;
+                }
             }
         }
         public void Refresh() { if (IsActive() && !Root.Rebuilding) LayoutScheduler.Request(this); }
@@ -62,7 +65,7 @@ namespace LunarConcerto.Lyruis
             if (!topologyDirty) return;
             Children.Clear();
             for (int i = 0; i < transform.childCount; i++)
-                if (transform.GetChild(i).TryGetComponent(out LyruisLayout child) && child.IsActive()) Children.Add(child);
+            if (transform.GetChild(i).TryGetComponent(out LyruisLayout child) && child.IsActive()) Children.Add(child);
             topologyDirty = false;
         }
         internal void NotifyCompleted() => OnLayoutRefreshed?.Invoke();
@@ -81,7 +84,11 @@ namespace LunarConcerto.Lyruis
         protected override void OnDisable() { Tracker.Clear(); InvalidateOwner(); base.OnDisable(); }
         protected override void OnTransformParentChanged() { base.OnTransformParentChanged(); InvalidateOwner(); Refresh(); }
         private void OnTransformChildrenChanged() { topologyDirty = true; Refresh(); }
-        protected override void OnRectTransformDimensionsChange() { if (IsActive() && Root == this) Refresh(); }
+        protected override void OnRectTransformDimensionsChange()
+        {
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Dimensions))
+            if (IsActive() && Root == this) Refresh();
+        }
 #if UNITY_EDITOR
         protected override void OnValidate() { base.OnValidate(); topologyDirty = true; LayoutScheduler.Request(this); }
 #endif

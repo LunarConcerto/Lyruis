@@ -4,7 +4,28 @@
   "displayName": "Lyruis",
   "description": "Composable single-component uGUI layouts.",
   "unity": "2022.3",
-  "author": {"name": "LunarConcerto", "url": "https://github.com/LunarConcerto"},
-  "dependencies": {"com.unity.ugui": "1.0.0"},
-  "samples": [{"displayName": "Layout Gallery", "description": "Linear, grid, flow and nested examples", "path": "Samples~/Gallery"}, {"displayName": "Benchmark", "description": "Matched uGUI rebuild comparison", "path": "Samples~/Benchmark"}]
+  "author": {
+    "name": "LunarConcerto",
+    "url": "https://github.com/LunarConcerto"
+  },
+  "dependencies": {
+    "com.unity.ugui": "1.0.0"
+  },
+  "samples": [
+    {
+      "displayName": "Layout Gallery",
+      "description": "Linear, grid, flow and nested examples",
+      "path": "Samples~/Gallery"
+    },
+    {
+      "displayName": "Benchmark",
+      "description": "Matched uGUI rebuild comparison",
+      "path": "Samples~/Benchmark"
+    },
+    {
+      "displayName": "Profiler Lab",
+      "description": "Interactive 1,273-node nested UI with controlled workloads and profiler markers",
+      "path": "Samples~/ProfilerLab"
+    }
+  ]
 }

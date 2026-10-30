@@ -87,3 +87,7 @@ The archived implementation was read to preserve its computational model and lay
 There is no automatic migration of old components or serialized fields. Rebuild representative prefabs and validate their appearance. In particular, this revision corrects the earlier Lyruis adapter's behavior: register children explicitly, Grid no longer stretches them, None is distinct from Overlay, and Keep means sizeDelta. Contributions should include Unity version, a minimal reproduction and expected geometry. [Changelog](Packages/com.lunarconcerto.lyruis/CHANGELOG.md).
 
 PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root request coalescing / 延迟尺寸计算与根请求合并).
+
+## Interactive Profiler Lab
+
+Import **Profiler Lab**, open `ProfilerLab.unity`, and enter Play. The scene contains 24 cards, 1,273 layout nodes, depth 6, 168 mutable text leaves, and Horizontal/Vertical/Grid/Flow/None containers. Choose Idle, Single Leaf, Batch Leaves, Force Root Every Frame, or Resize Root from the on-screen buttons. Rendering and detailed markers can be toggled independently. See the [profiling guide](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md). Development menu: **Tools > Lyruis > Generate Profiler Lab Scene**.
