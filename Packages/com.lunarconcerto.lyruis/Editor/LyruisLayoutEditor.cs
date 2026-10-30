@@ -12,7 +12,7 @@ namespace LunarConcerto.Lyruis.Editor
             foreach (string field in new[] { "mode", "widthMode", "heightMode", "fixedSize", "m_Padding", "m_ChildAlignment", "spacing" })
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(field), true);
             var mode = serializedObject.FindProperty("mode");
-            if (mode.hasMultipleDifferentValues || mode.enumValueIndex >= (int)LayoutMode.Grid)
+            if (mode.hasMultipleDifferentValues || (mode.enumValueIndex == (int)LayoutMode.Grid || mode.enumValueIndex == (int)LayoutMode.Flow))
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("flowAxis"));
             if (mode.hasMultipleDifferentValues || mode.enumValueIndex == (int)LayoutMode.Grid)
             {

@@ -21,6 +21,8 @@ namespace LunarConcerto.Lyruis.Samples
         {
             public string unity, platform, processor, utc;
             public bool editor;
+            public bool playMode = Application.isPlaying;
+            public string engine = "Lyruis independent postorder tree";
             public int warmup = 20, samples = 40, rebuildsPerSample = 10;
             public List<Result> results = new List<Result>();
         }
@@ -69,7 +71,11 @@ namespace LunarConcerto.Lyruis.Samples
             }
             return JsonUtility.ToJson(report, true);
         }
-        private static void Rebuild(RectTransform root) => LayoutRebuilder.ForceRebuildLayoutImmediate(root);
+        private static void Rebuild(RectTransform root)
+        {
+            if (root.TryGetComponent(out LyruisLayout layout)) layout.RebuildNow();
+            else LayoutRebuilder.ForceRebuildLayoutImmediate(root);
+        }
         private static double Time(RectTransform root, int repetitions)
         {
             long begin = Stopwatch.GetTimestamp();
@@ -103,6 +109,7 @@ namespace LunarConcerto.Lyruis.Samples
                 var child = new GameObject("Item", typeof(RectTransform), typeof(LayoutElement));
                 child.transform.SetParent(root, false);
                 var element = child.GetComponent<LayoutElement>(); element.preferredWidth = element.minWidth = 40; element.preferredHeight = element.minHeight = 24;
+                if (lyruis) { var item = child.AddComponent<LyruisLayout>(); item.WidthMode = item.HeightMode = SizeMode.Content; }
             }
             return root;
         }

@@ -53,6 +53,7 @@ public static class LyruisDevelopment
                     var item = new GameObject("Item " + i, typeof(RectTransform), typeof(Image), typeof(LayoutElement)); item.transform.SetParent(parent, false);
                     item.GetComponent<Image>().color = Color.HSVToRGB((i * .11f + j * .15f) % 1, .55f, .9f);
                     var e = item.GetComponent<LayoutElement>(); e.preferredWidth = p == 3 ? 100 + i % 3 * 35 : 60; e.preferredHeight = p == 1 ? 20 : 40;
+                    var itemLayout = item.AddComponent<LyruisLayout>(); itemLayout.WidthMode = itemLayout.HeightMode = SizeMode.Content;
                 }
             }
             layout.RebuildNow();

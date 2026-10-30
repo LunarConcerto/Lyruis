@@ -2,26 +2,26 @@
 
 [English](README.md)
 
-LunarConcerto 的单组件 uGUI 布局包。一个 Inspector 同时配置容器排布与自身尺寸，内部将 Unity 生命周期和几何计算分开维护。
+LunarConcerto 的单组件 uGUI 布局框架。**核心采用独立组件树、子节点优先的尺寸计算和自定义排布，不继承 LayoutGroup，也不通过 LayoutRebuilder 执行 Lyruis 布局。** 只有 Content 叶子节点使用 LayoutUtility 获取自身内容首选尺寸。
 
-当前版本 **0.1.0**；验证环境为 **Unity 2022.3.62f3 / Windows Editor**。尚未验证其他 Unity 版本或 Player 性能。使用仓库已有的 MIT 许可证。
+版本 0.1.0（开发中），沿用 MIT 许可证。已验证 Unity 2022.3.62f3 / Windows Editor；其他版本和目标 Player 尚未验证。
 
 ## 安装
 
-Package Manager → **Add package from git URL**：
+Package Manager → Add package from git URL：
 
 ```text
 https://github.com/LunarConcerto/Lyruis.git?path=/Packages/com.lunarconcerto.lyruis
 ```
 
-需要锁定版本时追加 `#<提交 SHA>`。要求 Unity 2022.3+，声明依赖 `com.unity.ugui`。整个仓库是可打开的开发工程；使用者仅安装上面的包子目录，无需安装开发工程中的 MCP 等工具。
+追加 `#<提交 SHA>` 可锁定版本。要求 Unity 2022.3+，依赖 uGUI（包已声明）。仓库是开发工程，安装包子目录不会安装开发工程中的 MCP 等工具。
 
 ## 快速开始
 
-1. 创建 UI Panel，添加 **Layout > Lyruis Layout**。
-2. Mode 选择 Vertical；Width Mode 选择 Fixed，Fixed Size X 设为 400；Height Mode 选择 Content。
-3. 添加 Text、Image 或设置了 LayoutElement 首选尺寸的子节点。只有需要自身排布或尺寸规则的子节点才需要再挂 LyruisLayout。
-4. 设置 Padding、Spacing、Child Alignment。通过 uGUI 布局系统自动重建。
+1. 在面板和**每个参与布局的子节点**上添加 Layout > Lyruis Layout。只处理激活的直接子组件，按兄弟顺序排列；普通 RectTransform 和禁用组件不参与。
+2. 面板选择 Vertical，WidthMode 设 Fixed，FixedSize X 设 400，HeightMode 设 Content。
+3. 子节点使用 Fixed 固定尺寸、Keep 保留尺寸，或 Content 读取叶子上的 Text/Image/LayoutElement 首选尺寸。
+4. 设置 padding、Spacing、childAlignment。配置属性 setter 自动请求根节点重建。修改外部内容如 Text.text、LayoutElement.preferredHeight 后，显式调用 Refresh()。
 
 ```csharp
 using LunarConcerto.Lyruis;
@@ -38,78 +38,54 @@ public class PanelSetup : MonoBehaviour
         layout.HeightMode = SizeMode.Content;
         layout.Spacing = new Vector2(8, 8);
         layout.padding = new RectOffset(16, 16, 16, 16);
+        // 每个参与节点也需挂 LyruisLayout。
         layout.Refresh();
     }
 }
 ```
 
-## 排布与尺寸规则
+## 布局与尺寸规则
 
-| 配置 | 行为 |
+| 模式 | 语义 |
 | --- | --- |
-| Horizontal / Vertical | 按兄弟顺序横排／竖排，交叉轴遵循 Child Alignment |
-| Grid | 所有子节点填满 Cell Size；Axis 为 Horizontal 时 Grid Count 是列数，为 Vertical 时是行数 |
-| Flow | 主轴空间不足时换行／换列；超大子项单独占一行并可能溢出 |
-| Overlay | 子节点共用一个内容框并按 Child Alignment 对齐，不保留手动位置的包围盒 |
-| Keep | 以当前 RectTransform.rect 尺寸作为首选尺寸；根节点不自行驱动此轴 |
-| Fixed | 使用 Fixed Size，对负尺寸按 0 处理 |
-| Content | 内容尺寸加 padding；叶子读取自身其他 ILayoutElement 的首选尺寸 |
+| None | 保留手动位置；Content 按参与子节点的相对包围盒计算，包含子树和原点，再加 padding。 |
+| Horizontal / Vertical | 主轴取子节点尺寸之和加间距；交叉轴取最大值，再加 padding。 |
+| Grid | CellSize 决定格子步进和容器尺寸，子节点保留自身尺寸；Axis 决定横向铺满列数或纵向铺满行数。GridCount 为0时回退为2；CellSize 为零时从首个子节点初始化。 |
+| Flow | 按可用主轴空间换行／换列；每行分别对齐，行内子项也进行交叉轴对齐。主轴 Content 或可用空间为0时不换行；超大项可溢出。 |
+| Overlay | 额外保留的便捷模式：共用内容框对齐；与 None 不同。 |
 
-测量时 Spacing 不小于 0，Grid Count 至少为 1。Flow 主轴使用 Content 时视为无限空间，不换行；该轴应使用 Fixed 或 Keep。Flow 的 Child Alignment 对齐整个内容块，每一行从主轴起点开始。当前没有 CSS flex-grow、百分比尺寸、margin、虚拟列表、RTL 或逐行两端对齐。
+Keep 保留 sizeDelta，包括拉伸锚点的节点。Fixed 读取 FixedSize。Content 容器根据注册的子节点计算；Content 叶子读取自身其他组件提供的首选尺寸，不叠加容器 padding。叶子先应用配置宽度再测量首选高度；不求解任意双向尺寸依赖。
 
-参与布局的是激活的直接 RectTransform 子节点，按兄弟顺序处理，并尊重 `ILayoutIgnorer.ignoreLayout`。非网格模式通过 LayoutUtility 读取首选尺寸。没有尺寸提供者的普通 RectTransform 会测量为 0；请添加 LayoutElement，或挂 LyruisLayout 并选择 Fixed/Keep。
+横竖排与网格沿用旧版边缘内边距规则：靠起点使用起点 padding，靠终点使用终点 padding，居中按外框中心计算。Flow 在扣除内边距后的空间中逐行对齐，并将富余空间限制为非负。Spacing 可以为负值。
 
-父布局驱动子节点的锚点、位置和尺寸。避免在同一对象的同一轴上叠加其他 LayoutGroup 或 ContentSizeFitter。Lyruis 通过 LayoutGroup 接入 ILayoutElement、ILayoutController、ILayoutSelfController。
+不提供 flex-grow、百分比尺寸、虚拟化，也不自动混用同一控制子树上的原生布局组件。LayoutElement.ignoreLayout 不会排除已注册的 Lyruis 节点；需要排除时禁用它的 LyruisLayout。
 
-## API
+## API 与刷新
 
-命名空间：`LunarConcerto.Lyruis`。
+命名空间：LunarConcerto.Lyruis。配置属性：Mode、Axis、WidthMode、HeightMode、FixedSize、Spacing、CellSize、GridCount、padding、childAlignment。SizeMode 包含 Keep、Fixed、Content；FlowAxis 包含 Horizontal、Vertical。
 
-| 成员 | 类型／用途 |
-| --- | --- |
-| Mode | LayoutMode：Overlay、Horizontal、Vertical、Grid、Flow |
-| Axis | FlowAxis：Horizontal / Vertical，影响 Grid 和 Flow |
-| WidthMode / HeightMode | SizeMode：Keep、Fixed、Content |
-| FixedSize | Vector2，仅 Fixed 轴读取对应值 |
-| Spacing | Vector2，水平／垂直间距 |
-| CellSize / GridCount | Vector2 / int，仅 Grid 使用 |
-| padding / childAlignment | 继承的 RectOffset / TextAnchor |
-| Refresh() | 标记脏状态，批量修改外部内容后调用 |
-| RebuildNow() | 立即重建当前子树；若祖先依赖其尺寸，请在布局根节点调用 |
+- Refresh() / RefreshRootLayout()：延迟并合并到激活的根节点。运行时由 Canvas.willRenderCanvases 刷新；编辑器另通过 delayCall 刷新。
+- RebuildNow() / RefreshLayout()：立即重建当前子树。
+- RebuildRootNow()：立即重建相连的根节点。
+- OnLayoutRefreshed：重建结束后按子节点到父节点顺序通知。后续更新使用 Refresh，避免在事件中同步递归重建。
+- RectTransform：缓存的变换访问属性。
 
-公开配置属性的 setter 自动标脏。Inspector、层级、尺寸变化沿用 LayoutGroup 的失效机制。不要从布局回调中递归调用 RebuildNow。换行文本先确定宽度再测量内容高度。禁用组件会解除驱动标记，但不会恢复历史 RectTransform 值。
+缓存子节点列表，在层级和启停变化时失效。执行顺序为：递归刷新子节点、缓存结果、计算自身尺寸、排布子节点。内部写入尺寸时抑制反馈请求；根尺寸变化请求刷新。外部内容变化需显式 Refresh，不逐帧轮询。父节点驱动子节点锚点、尺寸和位置。禁用解除驱动标记，但不恢复历史变换。直接修改返回的 RectOffset 内部字段后，也需调用 Refresh。
 
-## 示例
+## 示例、Benchmark 与开发
 
-在 Package Manager 的 Samples 中导入 **Layout Gallery** 和 **Benchmark**。Gallery.unity 包含横排、竖排、网格、流式、叠放和嵌套布局。内容超过容器时会溢出，布局本身不裁剪。
+Package Manager 的 Samples 可导入 Gallery 与 Benchmark。开发工程已导入到 Assets/Samples/Lyruis/0.1.0。Gallery 包含横排、竖排、网格、Flow、Overlay 与嵌套布局。Benchmark 场景进入 Play 后运行平铺和嵌套测试，Console 输出 Application.persistentDataPath 下两个 JSON 的路径。
 
-开发工程已导入到 `Assets/Samples/Lyruis/0.1.0`。菜单 **Tools > Lyruis > Generate Sample Scenes** 可重新生成。Benchmark.unity 进入 Play 后执行，将 JSON 写入 `Application.persistentDataPath/lyruis-benchmark.json`，Console 输出路径。样例脚本只有导入后才编译，不进入包的 Runtime 程序集。
+开发菜单：Tools > Lyruis > Generate Sample Scenes、Run Benchmark And Save Report、Run Nested Benchmark And Save Report。参见[平铺实测](BenchmarkResults/README.md)、[嵌套实测](BenchmarkResults/nested.md)和[验证记录](BenchmarkResults/validation.md)。Lyruis 调用自己的 RebuildNow，原生侧调用 LayoutRebuilder.ForceRebuildLayoutImmediate。测试构建几何等价的树，不代表完整应用 FPS 或 Canvas 自动调度。此前 LayoutGroup 适配版的数据保留为 historical JSON，不代表当前实现。
 
-## Benchmark
+在 Test Runner 的 EditMode 中运行 LunarConcerto.Lyruis.Tests；开发工程通过 testables 启用包测试。覆盖子节点优先测量、注册节点、旧版 Grid 尺寸、None 包围盒、逐行对齐、Keep／拉伸、回调与层级变化。尚未验证 Player 构建与独立消费工程的样例导入。
 
-参见[方法与实测](BenchmarkResults/README.md)和[原始 JSON](BenchmarkResults/editor-2022.3.json)。对比 HorizontalLayoutGroup、VerticalLayoutGroup、GridLayoutGroup，分别测试 10／100／1000 个子节点。测量同步强制重建，不代表渲染、静止帧、分配率或完整应用 FPS。Flow 没有纳入原生性能对照；结果仅适用于对应测试环境，不承诺普遍加速。
+## 架构、重写与迁移
 
-另有[复杂嵌套测试](BenchmarkResults/nested.md)：3／5／7 层横竖交替的内容自适应容器，以及分支更多的宽树。每种结构分别测量重复重建和叶子尺寸变化后整树重建。在预热后及每个测量批次后检查根节点与全部后代，几何误差超过 0.01 像素则拒绝输出结果。开发工程使用 **Tools > Lyruis > Run Nested Benchmark And Save Report**；导入的 Benchmark 场景也会执行，并在平铺报告旁写入 `lyruis-nested-benchmark.json`。它不测量 Canvas 自动脏传播。
+Runtime 拆分为 LyruisLayout（组件入口和层级事件）、LayoutScheduler（根请求合并）、LayoutTree（递归尺寸计算与变换写入）、LayoutEngine（几何排布）。Inspector 位于独立 Editor 程序集。详见[架构与迁移](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)。
 
-## 目录与开发
+本次阅读归档实现以保留计算模型与布局语义，再以新的结构和代码实现。未引入原命名空间、公司专用辅助工具、日志和资源。这不是人员隔离的正式 clean-room 流程，也不构成权属许可声明。
 
-```text
-Packages/com.lunarconcerto.lyruis/
-  Runtime/        组件、配置类型、几何引擎
-  Editor/         按模式显示的 Inspector
-  Tests/Editor/   Unity EditMode 行为测试
-  Samples~/       可导入场景和 Benchmark
-  Documentation~/ 架构与迁移说明
-```
+不提供旧组件和字段的自动迁移。请重建代表性 prefab 并验证外观。本次也修正了上一版 Lyruis 适配方案：需要显式注册子节点、Grid 不再拉伸子项、None 与 Overlay 分开、Keep 使用 sizeDelta。贡献时请提供 Unity 版本、最小复现和预期几何。参见[更新记录](Packages/com.lunarconcerto.lyruis/CHANGELOG.md)。
 
-使用 Unity 2022.3.62f3 打开仓库。manifest 的 testables 已包含本包，在 Test Runner 的 EditMode 中运行 `LunarConcerto.Lyruis.Tests`。测试覆盖自适应、嵌套、忽略／失活节点、换行、网格和空容器 padding。
-
-通过 **Tools > Lyruis > Run Benchmark And Save Report** 重现 Editor 测量；目标平台性能需将 Benchmark 场景构建为 Player 后测量。Unity 生成资源元数据，应将 `.meta` 与资源一起提交。
-
-## 重写与迁移
-
-本次根据功能描述重新实现，没有导入归档实现代码、注释或资源。新版本不提供二进制兼容：组件类型、命名空间、序列化字段和部分语义均已变化，没有自动迁移器。建议重建代表性的 prefab，核对尺寸和对齐。详见[架构与迁移说明](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)。
-
-沿用仓库已有 MIT 许可证。重新实现本身不能证明既往职务成果的权属已经解除；开发过程说明不代表法律审查结论。
-
-贡献时请提供最小 UI 复现、Unity 版本和预期几何结果。几何改动放在引擎，Unity 生命周期改动放在组件，并为回归问题添加行为测试。参见[更新记录](Packages/com.lunarconcerto.lyruis/CHANGELOG.md)。
+PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root request coalescing / 延迟尺寸计算与根请求合并).

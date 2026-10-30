@@ -2,9 +2,10 @@
     "unity": "2022.3.62f3",
     "platform": "WindowsEditor",
     "processor": "AMD Ryzen 9 9950X 16-Core Processor ",
-    "utc": "2026-10-30T17:06:45.8051731Z",
+    "utc": "2026-10-30T18:14:59.6425633Z",
     "editor": true,
     "playMode": false,
+    "engine": "Lyruis independent postorder tree",
     "warmup": 20,
     "samples": 40,
     "rebuildsPerSample": 10,
@@ -16,10 +17,10 @@
             "leaves": 8,
             "totalNodes": 15,
             "resizeLeaf": false,
-            "lyruisMedianMs": 0.19439,
-            "nativeMedianMs": 0.17723,
-            "lyruisP95Ms": 0.20095999999999998,
-            "nativeP95Ms": 0.18219000000000003,
+            "lyruisMedianMs": 0.055830000000000008,
+            "nativeMedianMs": 0.177325,
+            "lyruisP95Ms": 0.06421,
+            "nativeP95Ms": 0.18508,
             "maxGeometryError": 0.0
         },
         {
@@ -29,10 +30,10 @@
             "leaves": 8,
             "totalNodes": 15,
             "resizeLeaf": true,
-            "lyruisMedianMs": 0.20779999999999999,
-            "nativeMedianMs": 0.193165,
-            "lyruisP95Ms": 0.20878999999999998,
-            "nativeP95Ms": 0.20009000000000003,
+            "lyruisMedianMs": 0.06688,
+            "nativeMedianMs": 0.19305,
+            "lyruisP95Ms": 0.07345,
+            "nativeP95Ms": 0.19592,
             "maxGeometryError": 0.0
         },
         {
@@ -42,10 +43,10 @@
             "leaves": 32,
             "totalNodes": 63,
             "resizeLeaf": false,
-            "lyruisMedianMs": 0.8608100000000001,
-            "nativeMedianMs": 0.7706,
-            "lyruisP95Ms": 0.86873,
-            "nativeP95Ms": 0.77989,
+            "lyruisMedianMs": 0.241415,
+            "nativeMedianMs": 0.772055,
+            "lyruisP95Ms": 0.25093,
+            "nativeP95Ms": 0.78552,
             "maxGeometryError": 0.0
         },
         {
@@ -55,10 +56,10 @@
             "leaves": 32,
             "totalNodes": 63,
             "resizeLeaf": true,
-            "lyruisMedianMs": 0.8808549999999999,
-            "nativeMedianMs": 0.7934049999999999,
-            "lyruisP95Ms": 0.8918699999999999,
-            "nativeP95Ms": 0.8022600000000001,
+            "lyruisMedianMs": 0.26024,
+            "nativeMedianMs": 0.79532,
+            "lyruisP95Ms": 0.26917,
+            "nativeP95Ms": 0.80397,
             "maxGeometryError": 0.0
         },
         {
@@ -68,10 +69,10 @@
             "leaves": 128,
             "totalNodes": 255,
             "resizeLeaf": false,
-            "lyruisMedianMs": 3.539145,
-            "nativeMedianMs": 3.1507949999999997,
-            "lyruisP95Ms": 3.63748,
-            "nativeP95Ms": 3.19803,
+            "lyruisMedianMs": 1.01501,
+            "nativeMedianMs": 3.19888,
+            "lyruisP95Ms": 1.03578,
+            "nativeP95Ms": 3.27438,
             "maxGeometryError": 0.0
         },
         {
@@ -81,10 +82,10 @@
             "leaves": 128,
             "totalNodes": 255,
             "resizeLeaf": true,
-            "lyruisMedianMs": 3.588655,
-            "nativeMedianMs": 3.20179,
-            "lyruisP95Ms": 3.6345300000000004,
-            "nativeP95Ms": 3.2318,
+            "lyruisMedianMs": 1.0442550000000002,
+            "nativeMedianMs": 3.2128699999999998,
+            "lyruisP95Ms": 1.06539,
+            "nativeP95Ms": 3.23645,
             "maxGeometryError": 0.0
         },
         {
@@ -94,10 +95,10 @@
             "leaves": 64,
             "totalNodes": 85,
             "resizeLeaf": false,
-            "lyruisMedianMs": 1.125565,
-            "nativeMedianMs": 1.0556450000000002,
-            "lyruisP95Ms": 1.15687,
-            "nativeP95Ms": 1.06464,
+            "lyruisMedianMs": 0.36343000000000005,
+            "nativeMedianMs": 1.0655649999999999,
+            "lyruisP95Ms": 0.36957,
+            "nativeP95Ms": 1.08002,
             "maxGeometryError": 0.0
         },
         {
@@ -107,10 +108,10 @@
             "leaves": 64,
             "totalNodes": 85,
             "resizeLeaf": true,
-            "lyruisMedianMs": 1.140095,
-            "nativeMedianMs": 1.076775,
-            "lyruisP95Ms": 1.1497600000000002,
-            "nativeP95Ms": 1.0861800000000002,
+            "lyruisMedianMs": 0.37956500000000006,
+            "nativeMedianMs": 1.09816,
+            "lyruisP95Ms": 0.40696000000000007,
+            "nativeP95Ms": 1.13391,
             "maxGeometryError": 0.0
         }
     ]

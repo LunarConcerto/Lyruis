@@ -1,14 +1,9 @@
 # Lyruis
 
-Single-component uGUI layouts in `LunarConcerto.Lyruis`.
+Independent postorder UI layout tree in `LunarConcerto.Lyruis`. Add LyruisLayout to containers **and every participating child**. Supports None, Horizontal, Vertical, Grid, Flow and Overlay, with Keep / Fixed / Content sizing. Core execution does not use LayoutGroup/LayoutRebuilder; intrinsic Content leaf sizes may come from uGUI.
 
-Add **Layout > Lyruis Layout** to a RectTransform. Choose Horizontal, Vertical, Grid, Flow or Overlay, then configure Keep / Fixed / Content sizing. Native Text, Image and LayoutElement children can participate directly. Import the Gallery and Benchmark from Package Manager's Samples tab.
+独立递归布局树；容器和参与子节点均需挂组件。保留旧库的子节点优先计算、Grid 子项自身尺寸、None 手动包围盒和 Flow 逐行对齐语义。
 
-一个组件配置 uGUI 排布与自身尺寸。支持横排、竖排、网格、自动换行和叠放；子节点可以直接使用原生尺寸提供者。在 Package Manager 的 Samples 中导入示例与性能对比场景。
+[English](https://github.com/LunarConcerto/Lyruis/blob/main/README.md) · [中文](https://github.com/LunarConcerto/Lyruis/blob/main/README.zh-CN.md) · [Architecture](Documentation~/architecture.md)
 
-- [English manual](https://github.com/LunarConcerto/Lyruis/blob/main/README.md)
-- [中文手册](https://github.com/LunarConcerto/Lyruis/blob/main/README.zh-CN.md)
-- [Architecture / 架构](Documentation~/architecture.md)
-- [Benchmark / 性能对比](https://github.com/LunarConcerto/Lyruis/tree/main/BenchmarkResults)
-
-Tested on Unity 2022.3.62f3, Windows Editor. MIT license. Version 0.1.0.
+Import Gallery and Benchmark from Package Manager Samples. Unity 2022.3+, MIT, version 0.1.0 (development).

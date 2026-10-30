@@ -1,29 +1,21 @@
-# Benchmark / 性能对比
+# Flat benchmark / 平铺测试
 
-This page records the flat-tree baseline. See [complex nested benchmark / 复杂嵌套测试](nested.md) for alternating-axis content-sized trees, including leaf resizing.
+Measured on Unity 2022.3.62f3 / Windows Editor, Edit mode, Ryzen 9 9950X, 2026-10-31 (Asia/Hong_Kong). Lyruis uses its independent postorder tree; native uGUI uses LayoutRebuilder. No Canvas or Graphics in the test trees. Setup, warmup and validation are excluded from timing. 20 warmups, 40 paired batches alternating execution order, 10 rebuilds per batch. Median averages entries 20/21; P95 uses nearest-rank entry 38. Units: ms/rebuild. These measure explicit full rebuilds, not FPS, rendering, GC or normal dirty scheduling. Player results remain unverified.
 
-Unity 2022.3.62f3, Windows Editor (Play mode), AMD Ryzen 9 9950X. Recorded 2026-10-31 (Asia/Hong_Kong).
+当前数据来自独立树执行模型，不是此前 LayoutGroup 适配版。Lyruis 一侧的每个参与节点都挂组件；容器直接读取子节点计算结果，只有 Content 叶子查询 LayoutUtility。原生侧使用原生布局和 LayoutElement。两侧先验证几何，再比较耗时。历史 JSON 保留用于追溯，不应混作同一实现的结果。
 
-Measures LayoutRebuilder.ForceRebuildLayoutImmediate on separate flat trees, with identical 40x24 LayoutElement children. Root 800x600, top-left, no padding, gap 4. Grid: 10 columns. Native linear groups control both dimensions without force-expand; min equals preferred so neither baseline shrinks. Both trees have no Graphics or Canvas. Setup, geometry check and destruction are excluded.
+Root 800x600; item preferred/min 40x24; gaps 4; grid cell 40x24, 10 columns. Lyruis item Content sizes remain independent of grid cells; chosen sizes match the native grid baseline. Linear native groups control both axes without force-expand.
 
-20 warmup rebuilds each; 40 paired samples, alternating execution order; 10 rebuilds per sample. Values are milliseconds per rebuild. Median averages sorted entries 20 and 21; P95 is nearest-rank entry 38. maxGeometryError compares child size and anchored position before timing. This does not measure rendering, allocations, nested UI, dirty scheduling or player FPS. Run on target hardware for decisions.
-
-测试为同步强制重建的平铺树；不包含创建、销毁、渲染、嵌套布局或正常脏标记调度。预热20次，40组交替测量，每组10次重建。中位数与P95单位均为毫秒。几何误差对比子节点尺寸与锚点位置。不是完整应用帧率测试。
-
-| Mode | Children | Lyruis median | Native median | Lyruis P95 | Native P95 | Geometry error |
+| Mode | Items | Lyruis median | Native median | Lyruis P95 | Native P95 | Error |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Horizontal | 10 | 0.1186 | 0.1171 | 0.1278 | 0.1187 | 0 |
-| Horizontal | 100 | 1.1322 | 1.1395 | 1.1484 | 1.1582 | 0 |
-| Horizontal | 1000 | 11.3604 | 12.2483 | 11.4914 | 12.3875 | 0 |
-| Vertical | 10 | 0.1187 | 0.1158 | 0.1231 | 0.1193 | 0 |
-| Vertical | 100 | 1.1449 | 1.1359 | 1.1543 | 1.1482 | 0 |
-| Vertical | 1000 | 11.5492 | 12.3283 | 12.2912 | 13.4171 | 0 |
-| Grid | 10 | 0.0449 | 0.0456 | 0.0479 | 0.0462 | 0 |
-| Grid | 100 | 0.4023 | 0.4221 | 0.4169 | 0.4386 | 0 |
-| Grid | 1000 | 4.0257 | 4.2286 | 4.0981 | 4.2749 | 0 |
+| Horizontal | 10 | 0.0479 | 0.1282 | 0.0484 | 0.1294 | 0.0 |
+| Horizontal | 100 | 0.4664 | 1.2510 | 0.4768 | 1.2734 | 0.0 |
+| Horizontal | 1000 | 4.6919 | 13.3516 | 4.8096 | 13.8041 | 0.0 |
+| Vertical | 10 | 0.0486 | 0.1292 | 0.0501 | 0.1345 | 0.0 |
+| Vertical | 100 | 0.4680 | 1.2536 | 0.4813 | 1.2726 | 0.0 |
+| Vertical | 1000 | 4.7125 | 13.3320 | 4.7843 | 13.5589 | 0.0 |
+| Grid | 10 | 0.0474 | 0.0508 | 0.0486 | 0.0553 | 0.0 |
+| Grid | 100 | 0.4596 | 0.4689 | 0.4846 | 0.5453 | 0.0 |
+| Grid | 1000 | 4.6435 | 4.6932 | 4.7703 | 4.7922 | 0.0 |
 
-All nine geometry checks matched. Timing differences are small in several cases and depend on the environment; this single run is not statistical evidence of a universal speedup. No allocation or zero-GC claim is made.
-
-全部9组几何一致。部分耗时差异很小，单次运行不能证明普遍性能优势；未测量GC或分配率。
-
-Reproduce: import Benchmark sample and enter Play mode; JSON is logged under Application.persistentDataPath. In this development project use Tools > Lyruis > Run Benchmark And Save Report. Raw data: [editor-2022.3.json](editor-2022.3.json).
+[Raw JSON](editor-2022.3.json). [Historical adapter JSON](historical-ugui-adapter-editor-2022.3.json). [Nested results](nested.md). Reproduce: Tools > Lyruis > Run Benchmark And Save Report, or Play the imported Benchmark scene.
