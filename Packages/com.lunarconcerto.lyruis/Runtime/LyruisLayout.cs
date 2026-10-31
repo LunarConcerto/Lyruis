@@ -21,6 +21,12 @@ namespace LunarConcerto.Lyruis
         [SerializeField] private TextAnchor m_ChildAlignment;
         private RectTransform rect;
         private LyruisLayout owner;
+        // Conservative global invalidation keeps cached roots correct across trees,
+        // including adding/enabling a parent component after its children exist.
+        private static int topologyRevision = 1;
+        private int cachedRevision;
+        private LyruisLayout cachedRoot;
+        private static void TopologyChanged() => System.Threading.Interlocked.Increment(ref topologyRevision);
         private bool topologyDirty = true;
         internal readonly List<LyruisLayout> Children = new List<LyruisLayout>();
         internal readonly List<Vector2> Sizes = new List<Vector2>();
@@ -49,8 +55,12 @@ namespace LunarConcerto.Lyruis
             {
                 using (LyruisDiagnostics.Sample(LyruisDiagnostics.RootLookup, LyruisDiagnostics.Phase.RootLookup))
                 {
+                    int revision = topologyRevision;
+                    if (cachedRevision == revision && cachedRoot && cachedRoot.IsActive()) return cachedRoot;
                     var node = this;
                     while (node.transform.parent && node.transform.parent.TryGetComponent(out LyruisLayout parent) && parent.IsActive()) node = parent;
+                    cachedRoot = node;
+                    cachedRevision = revision;
                     return node;
                 }
             }
@@ -80,17 +90,17 @@ namespace LunarConcerto.Lyruis
             owner = transform.parent ? transform.parent.GetComponent<LyruisLayout>() : null;
             if (owner) { owner.topologyDirty = true; owner.Refresh(); }
         }
-        protected override void OnEnable() { base.OnEnable(); topologyDirty = true; InvalidateOwner(); Refresh(); }
-        protected override void OnDisable() { Tracker.Clear(); InvalidateOwner(); base.OnDisable(); }
-        protected override void OnTransformParentChanged() { base.OnTransformParentChanged(); InvalidateOwner(); Refresh(); }
-        private void OnTransformChildrenChanged() { topologyDirty = true; Refresh(); }
+        protected override void OnEnable() { base.OnEnable(); TopologyChanged(); topologyDirty = true; InvalidateOwner(); Refresh(); }
+        protected override void OnDisable() { TopologyChanged(); Tracker.Clear(); InvalidateOwner(); base.OnDisable(); }
+        protected override void OnTransformParentChanged() { base.OnTransformParentChanged(); TopologyChanged(); InvalidateOwner(); Refresh(); }
+        private void OnTransformChildrenChanged() { TopologyChanged(); topologyDirty = true; Refresh(); }
         protected override void OnRectTransformDimensionsChange()
         {
             using (LyruisDiagnostics.Sample(LyruisDiagnostics.Dimensions, LyruisDiagnostics.Phase.DimensionChanged))
             if (IsActive() && Root == this) Refresh();
         }
 #if UNITY_EDITOR
-        protected override void OnValidate() { base.OnValidate(); topologyDirty = true; LayoutScheduler.Request(this); }
+        protected override void OnValidate() { base.OnValidate(); TopologyChanged(); topologyDirty = true; LayoutScheduler.Request(this); }
 #endif
     }
 }

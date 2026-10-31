@@ -2,6 +2,9 @@
 
 ## 0.1.0 — 2026-10-31
 
+- Add bounded peak sweeps, raw tail samples, geometry snapshots and comparison tooling.
+- Cache connected roots with topology invalidation; combine child rectangle updates and skip unchanged setters without changing layout rules.
+
 - Add window-independent phase timing, exclusive/inclusive accounting, automated two-pass measurement, cancellation/state restoration and raw JSON/Markdown reports.
 
 - Add a serialized interactive Profiler Lab scene (1,273 layout nodes), controlled mutation workloads, and optional detailed execution markers.

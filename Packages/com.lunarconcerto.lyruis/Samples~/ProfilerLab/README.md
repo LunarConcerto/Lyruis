@@ -95,3 +95,22 @@ Idle does not continuously rebuild. If recording is off, Play is paused, or the 
 ### Window-independent phase API
 
 `LyruisDiagnostics.BeginMeasurement()` resets and enables main-thread counters. Run the operation, then call `EndMeasurement()` outside all scopes to receive `PhaseResult[]` (calls, inclusiveMs, selfMs). It works with `DetailedProfiling = false`. Nested/concurrent measurement sessions are rejected. This API is for diagnostic runs; keep it off for ordinary runtime operation.
+
+
+## Peak sweep / 峰值与扩展性扫描
+
+Development project: enter Play in ProfilerLab, then **Tools > Lyruis > Run Peak Sweep (Play Mode)**. The current lab is temporarily disabled, test labs are generated at runtime, and the original lab is restored afterward. Source scenes are not overwritten. Imported sample: attach `LyruisPeakSweep` to a **separate GameObject**, then use its Run Current Peak Sweep context menu in Play. The controller must remain active while the visible lab is disabled.
+
+默认规模：12/24/48/80张卡片，分别为637/1273/2545/4241个布局节点。每个规模测试单叶子变化、32叶子批量变化、全部可变叶子变化、一次根重建、同一操作连续4次根重建、根宽变化。每组40个跨帧样本，6次预热，另采4个细分诊断样本；诊断不混入总耗时统计。
+
+Reports: `BenchmarkResults/PeakSweep/peak-<label>-<UTC timestamp>.json/.md/.geometry.bin`. JSON preserves raw timing/allocation samples, P95, observed Max, root completion counts and diagnostic phase totals. Geometry snapshots store every node's sizeDelta, anchoredPosition, anchorMin, anchorMax and pivot (10 Float32 values/node) so optimizations can be compared without relying only on hashes.
+
+此扫描用于寻找本机、当前配置下的操作成本越界点，不是理论性能上限。一次操作包含显式 Canvas 刷新，尚不等于完整帧；Root4 是人为放大的同步调用压力。16.67ms仅作参考预算线，不能据此宣称实际60FPS容量。有限样本的Max是观测极值，不是最坏情况保证。未验证Player。
+
+Compare matching captures with repository script:
+
+```text
+python scripts/compare_peak_sweeps.py before.json after.json comparison.md
+```
+
+The comparator rejects mismatched environment/configurations, unexpected root completion counts, or any stored geometry difference above .01; it reports median/P95/observed-Max changes including regressions. The retained before capture used runtime commit `4d3d3d7` with this same stress harness; the after capture includes root caching and conditional combined transform writes. Sequential captures are not randomized A/B trials or confidence intervals.

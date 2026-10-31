@@ -29,3 +29,11 @@ Not verified: other Unity versions, player builds, GC rates, separate consumer-p
 - Phase calls match tree structure: 1,273 tracker scopes, 720 leaf scopes and 529 container-measurement scopes per root rebuild.
 - Cancellation was verified after a real text mutation: all workload text strings and root size restored, automation and counters inactive afterward.
 - Reports preserve raw evidence and distinguish instrumented phase data from timing-only totals; current-thread allocations are not claimed as whole-frame GC statistics.
+
+## Peak sweep and conservative runtime optimization — 2026-10-31
+
+- 21 EditMode tests passed, including arbitrary-pivot/external-RectTransform-edit equivalence and cached root invalidation on reparenting, parent addition and enable/disable. 2 PlayMode scheduling tests passed (23 total tests).
+- Before and after: 24 matching configurations, 40 timing samples each, 6 warmups and 4 separate diagnostic samples. 637/1273/2545/4241 nodes, six workloads.
+- Binary geometry comparison checks all nodes' dimensions, positions, anchors and pivots across all configurations; maximum absolute coordinate difference .000031, below .01. Root completion counts match expected 1 or 4.
+- Reports preserve median, P95, observed Max and regressions rather than asserting a universal speedup. Existing algorithm/Flow/Grid/None semantics remain unchanged.
+- Source scenes were not regenerated or overwritten by the sweep. Editor-only captures; no target-player validation or full-frame FPS/capacity claim.

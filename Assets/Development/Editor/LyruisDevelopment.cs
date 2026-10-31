@@ -52,6 +52,16 @@ public static class LyruisDevelopment
         if (Directory.Exists(path)) EditorUtility.RevealInFinder(path);
         else Debug.LogWarning("Run an automated measurement first.");
     }
+    [MenuItem("Tools/Lyruis/Run Peak Sweep (Play Mode)")]
+    public static void RunPeakSweep()
+    {
+        if (!EditorApplication.isPlaying || !Object.FindObjectOfType<LyruisProfilerLab>())
+            throw new System.InvalidOperationException("Enter Play in the Profiler Lab scene before running the peak sweep.");
+        foreach (var existing in Object.FindObjectsOfType<LyruisPeakSweep>())
+            if (existing.IsRunning) throw new System.InvalidOperationException("A peak sweep is already running.");
+        EditorApplication.isPaused = false;
+        new GameObject("Lyruis peak sweep controller").AddComponent<LyruisPeakSweep>().RunCurrent();
+    }
     [MenuItem("Tools/Lyruis/Generate Sample Scenes")]
     public static void Generate()
     {

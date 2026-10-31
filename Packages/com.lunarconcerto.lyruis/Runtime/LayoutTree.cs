@@ -81,10 +81,22 @@ namespace LunarConcerto.Lyruis
                     var target = node.Children[i].RectTransform;
                     var slot = node.Slots[i];
                     node.Tracker.Add(node, target, DrivenTransformProperties.Anchors | DrivenTransformProperties.AnchoredPosition | DrivenTransformProperties.SizeDelta);
-                    target.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, slot.x, slot.width);
-                    target.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, slot.y, slot.height);
+                    ApplyRect(target, slot);
                 }
             }
+        }
+        private static void ApplyRect(RectTransform target, Rect slot)
+        {
+            // Same top-left/pivot equations as SetInsetAndSizeFromParentEdge, with
+            // one combined update per property and no setter call for unchanged values.
+            Vector2 anchor = Vector2.up;
+            if (!target.anchorMin.Equals(anchor)) target.anchorMin = anchor;
+            if (!target.anchorMax.Equals(anchor)) target.anchorMax = anchor;
+            Vector2 size = slot.size;
+            if (!target.sizeDelta.Equals(size)) target.sizeDelta = size;
+            Vector2 pivot = target.pivot;
+            Vector2 position = new Vector2(slot.x + size.x * pivot.x, -slot.y - size.y * (1 - pivot.y));
+            if (!target.anchoredPosition.Equals(position)) target.anchoredPosition = position;
         }
     }
 }

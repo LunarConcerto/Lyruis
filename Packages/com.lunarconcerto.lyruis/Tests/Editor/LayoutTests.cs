@@ -136,5 +136,43 @@ namespace LunarConcerto.Lyruis.Tests
             layout.OnLayoutRefreshed += () => events.Add(2); layout.RebuildNow();
             CollectionAssert.AreEqual(new[] { 1, 2 }, events);
         }
+        [Test] public void CombinedWritesMatchLegacyInsetsForArbitraryPivotAndRestoreExternalEdits()
+        {
+            var item = Child(37, 23); item.pivot = new Vector2(.2f, .8f);
+            layout.padding = new RectOffset(7, 3, 9, 5); layout.RebuildNow();
+            Vector2 expected = new Vector2(7 + 37 * .2f, -9 - 23 * .2f);
+            Assert.AreEqual(expected.x, item.anchoredPosition.x, .001);
+            Assert.AreEqual(expected.y, item.anchoredPosition.y, .001);
+            item.anchorMin = Vector2.zero; item.anchorMax = Vector2.one;
+            item.sizeDelta = new Vector2(400, 300); item.anchoredPosition = new Vector2(100, 100);
+            layout.RebuildNow();
+            Assert.AreEqual(Vector2.up, item.anchorMin); Assert.AreEqual(Vector2.up, item.anchorMax);
+            Assert.AreEqual(new Vector2(37, 23), item.sizeDelta);
+            Assert.Less(Vector2.Distance(expected, item.anchoredPosition), .001);
+        }
+        [Test] public void RootCacheInvalidatesOnReparenting()
+        {
+            var other = new GameObject("Other root", typeof(RectTransform), typeof(LyruisLayout));
+            try
+            {
+                var leaf = Child(20, 10).GetComponent<LyruisLayout>(); int first = 0, second = 0;
+                layout.OnLayoutRefreshed += () => first++;
+                other.GetComponent<LyruisLayout>().OnLayoutRefreshed += () => second++;
+                leaf.RebuildRootNow(); Assert.AreEqual(1, first);
+                leaf.transform.SetParent(other.transform, false); leaf.RebuildRootNow();
+                Assert.AreEqual(1, first); Assert.AreEqual(1, second);
+            }
+            finally { Object.DestroyImmediate(other); }
+        }
+        [Test] public void RootCacheInvalidatesWhenParentComponentIsDisabledOrAdded()
+        {
+            var branch = new GameObject("Branch", typeof(RectTransform)); branch.transform.SetParent(root.transform, false);
+            var leaf = Child(20, 10).GetComponent<LyruisLayout>(); leaf.transform.SetParent(branch.transform, false);
+            int completed = 0; layout.OnLayoutRefreshed += () => completed++;
+            leaf.RebuildRootNow(); Assert.AreEqual(0, completed);
+            var middle = branch.AddComponent<LyruisLayout>(); leaf.RebuildRootNow(); Assert.AreEqual(1, completed);
+            middle.enabled = false; leaf.RebuildRootNow(); Assert.AreEqual(1, completed);
+            middle.enabled = true; leaf.RebuildRootNow(); Assert.AreEqual(2, completed);
+        }
     }
 }
