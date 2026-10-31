@@ -91,3 +91,5 @@ PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root 
 ## Interactive Profiler Lab
 
 Import **Profiler Lab**, open `ProfilerLab.unity`, and enter Play. The scene contains 24 cards, 1,273 layout nodes, depth 6, 168 mutable text leaves, and Horizontal/Vertical/Grid/Flow/None containers. Choose Idle, Single Leaf, Batch Leaves, Force Root Every Frame, or Resize Root from the on-screen buttons. Rendering and detailed markers can be toggled independently. See the [profiling guide](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md). Development menu: **Tools > Lyruis > Generate Profiler Lab Scene**.
+
+The Profiler Lab now includes **AUTO REPORT / Stop** and **Tools > Lyruis > Run Automated Measurement**: it runs five workloads in timing-only and phase-diagnostic passes, exports raw JSON plus Markdown findings, and requires no Profiler window recording. Reports are saved in `BenchmarkResults/AutoMeasure` in the Editor. See the [automatic measurement guide](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md#one-click-automated-measurement--一键自动测量).

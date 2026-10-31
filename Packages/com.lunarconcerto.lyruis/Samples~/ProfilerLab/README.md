@@ -69,3 +69,29 @@ Detailed markers are controlled globally by `LyruisDiagnostics.DetailedProfiling
 Development project: **Tools > Lyruis > Generate Profiler Lab Scene**. This recreates the sample scene asset. An open, unmodified Profiler Lab is replaced with the generated scene; regeneration rejects an open Lab with unsaved changes. Importable copies live under `Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab` and must be synchronized when regenerating for distribution.
 
 Visibility uses CanvasGroup instead of disabling Canvas: disabling Canvas can change the Canvas context used by legacy Text intrinsic sizing. 可见性通过 CanvasGroup.alpha 切换，避免禁用 Canvas 改变文本测量上下文；这不等同于关闭全部 UI CPU 开销。
+
+
+## One-click automated measurement / 一键自动测量
+
+**Development project:** choose **Tools > Lyruis > Run Automated Measurement** with this scene open. It enters Play automatically, or unpauses an existing Play session. **Imported sample:** enter Play and press **AUTO REPORT / Stop**. Press it again to cancel. No Profiler recording, CPU Hierarchy search, Deep Profile or ProfilerRecorder availability is required.
+
+自动测量会暂时接管场景负载并禁用其余负载按钮；完成或取消时恢复原来的文本、尺寸、显示、负载配置及计数器。默认执行5种负载 × 2轮 × 40个样本，每轮10次预热；开始前等待30帧。Manual Change Interval 不参与此测试，每个样本执行一次操作，跨帧采样。
+
+- **Timing only:** detailed markers and phase timers are off. Records operation-plus-explicit-Canvas-flush Median/P95, current-thread allocated bytes, and root completion counts.
+- **Diagnostics:** resets the same text/size state, repeats the workload, and records per-phase calls, inclusive time and self time with Stopwatch scopes. Self excludes other instrumented child scopes. Inclusive phases overlap and must not be summed. Existing coarse markers remain available, but window recording can stay off.
+- **Idle:** no tick/rebuild is explicitly requested; still times Canvas.ForceUpdateCanvases. This baseline is intentionally not zero and is not silently subtracted from other cases.
+- **Raw evidence:** JSON retains all sample times and allocated byte counts plus phase totals. Markdown provides summaries and rule-based findings. Findings are optimization leads, not automatic proof of a bottleneck.
+
+Editor reports: `BenchmarkResults/AutoMeasure/measurement-<UTC timestamp>.md` and `.json`. Player reports: `Application.persistentDataPath/LyruisAutoMeasure`. Full paths are logged to Console; the scene status shows the completed report filename. Select the `LyruisAutoMeasure` component to change Samples Per Case, Warmup Operations and Settle Frames.
+
+报告会提示：Idle 意外重建、一次操作多次根完成、窗口内分配、细分计时导致的明显开销增长，以及各负载中 Self 耗时最高的阶段。提示依据是明确规则，不会自动修改布局代码。GC列仅表示当前主线程计时窗口内分配；报告数组、状态文字和导出本身在窗口外仍会分配，不能据此声称整帧零GC。
+
+These are synchronous operation measurements, not complete PlayerLoop frame time, GPU time, or delayed rendering/mesh updates outside the explicit flush. Per-phase timings are instrumented and can perturb the workload; use timing-only totals for comparisons. Pass order is fixed (timing then diagnostics), so repeat captures to assess order/noise effects. Geometry checks reject non-finite/negative sizes, but do not establish equivalence against another implementation. Scene initialization and export are excluded. Player builds remain unverified.
+
+### Why manual Profiler entries can be absent / 为什么手动查不到
+
+Idle does not continuously rebuild. If recording is off, Play is paused, or the selected frame is from Idle, there may be no Lyruis samples in that frame. Fine-grained markers also require Detailed Markers enabled. The automatic report avoids these UI/selected-frame dependencies and explicitly states what it measured.
+
+### Window-independent phase API
+
+`LyruisDiagnostics.BeginMeasurement()` resets and enables main-thread counters. Run the operation, then call `EndMeasurement()` outside all scopes to receive `PhaseResult[]` (calls, inclusiveMs, selfMs). It works with `DetailedProfiling = false`. Nested/concurrent measurement sessions are rejected. This API is for diagnostic runs; keep it off for ordinary runtime operation.

@@ -9,6 +9,49 @@ using UnityEngine.UI;
 
 public static class LyruisDevelopment
 {
+    [InitializeOnLoadMethod]
+    private static void RegisterMeasurementLaunch()
+    {
+        EditorApplication.playModeStateChanged -= ResumeMeasurement;
+        EditorApplication.playModeStateChanged += ResumeMeasurement;
+    }
+    private static void ResumeMeasurement(PlayModeStateChange change)
+    {
+        if (change != PlayModeStateChange.EnteredPlayMode || !SessionState.GetBool("Lyruis.AutoMeasure", false)) return;
+        SessionState.SetBool("Lyruis.AutoMeasure", false);
+        EditorApplication.delayCall += RunCurrentMeasurement;
+    }
+    private static void RunCurrentMeasurement()
+    {
+        var lab = Object.FindObjectOfType<LyruisProfilerLab>();
+        if (!lab) throw new System.InvalidOperationException("Open the Profiler Lab scene first.");
+        var runner = lab.GetComponent<LyruisAutoMeasure>();
+        if (!runner) runner = lab.gameObject.AddComponent<LyruisAutoMeasure>();
+        if (!runner.IsRunning) runner.ToggleMeasurement();
+    }
+    [MenuItem("Tools/Lyruis/Run Automated Measurement")]
+    public static void RunAutomatedMeasurement()
+    {
+        if (!Object.FindObjectOfType<LyruisProfilerLab>())
+            throw new System.InvalidOperationException("Open Assets/Samples/Lyruis/0.1.0/ProfilerLab/ProfilerLab.unity first.");
+        if (EditorApplication.isPlaying)
+        {
+            EditorApplication.isPaused = false;
+            RunCurrentMeasurement();
+        }
+        else
+        {
+            SessionState.SetBool("Lyruis.AutoMeasure", true);
+            EditorApplication.isPlaying = true;
+        }
+    }
+    [MenuItem("Tools/Lyruis/Open Automated Reports Folder")]
+    public static void OpenAutomatedReportsFolder()
+    {
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "BenchmarkResults", "AutoMeasure");
+        if (Directory.Exists(path)) EditorUtility.RevealInFinder(path);
+        else Debug.LogWarning("Run an automated measurement first.");
+    }
     [MenuItem("Tools/Lyruis/Generate Sample Scenes")]
     public static void Generate()
     {

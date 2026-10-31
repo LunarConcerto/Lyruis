@@ -93,3 +93,5 @@ PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root 
 ## Profiler 交互场景
 
 导入 **Profiler Lab**，打开 ProfilerLab.unity 后进入 Play。包含24张卡片、1,273个布局节点、6层嵌套、168个可变文本叶子，混合横竖排、Grid、Flow、None。屏幕按钮可切换静止、单叶子变化、批量变化、逐帧强制重建和根宽度变化；渲染和细粒度标记可分别切换。详见[Profiler 使用说明](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。开发菜单：Tools > Lyruis > Generate Profiler Lab Scene。
+
+新增 **AUTO REPORT / Stop** 按钮和 **Tools > Lyruis > Run Automated Measurement** 菜单：自动执行五类负载的总耗时与阶段诊断双轮测试，输出原始 JSON、Markdown 表格及规则分析，无需打开 Profiler 录制。Editor 报告保存在 `BenchmarkResults/AutoMeasure`。详见[自动测量说明](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。

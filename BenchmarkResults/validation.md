@@ -21,3 +21,11 @@ Not verified: other Unity versions, player builds, GC rates, separate consumer-p
 - Visibility uses CanvasGroup alpha; a Play-mode comparison of all 1,273 node rectangles found zero changed rectangles while hidden, preserving active Canvas/Text measurement context; it is not a complete UI CPU isolation switch. Detail toggle changes LyruisDiagnostics.DetailedProfiling.
 - Unity Profiler CPU frame data contains LyruisLab.WorkloadTick and Lyruis markers for rebuild, root lookup, child collection, tracker clearing, intrinsic measurement, container measurement, arrangement, rectangle writes, manual bounds and completion.
 - Game View inspected; 18 existing tests passed. No performance speedup claim is made for this instrumented revision, and no target-player build was run.
+
+## Automated phase measurement — 2026-10-31
+
+- 18 EditMode tests passed, including phase-accounting/reset/concurrent-session checks; 2 PlayMode scheduling tests passed.
+- Two complete automated captures ran with Profiler recording disabled, each with 10 cases and 40 raw samples per case. Idle had 0 root completions/op; every active case had 1/op.
+- Phase calls match tree structure: 1,273 tracker scopes, 720 leaf scopes and 529 container-measurement scopes per root rebuild.
+- Cancellation was verified after a real text mutation: all workload text strings and root size restored, automation and counters inactive afterward.
+- Reports preserve raw evidence and distinguish instrumented phase data from timing-only totals; current-thread allocations are not claimed as whole-frame GC statistics.

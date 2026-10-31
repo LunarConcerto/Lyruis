@@ -30,7 +30,7 @@ namespace LunarConcerto.Lyruis
         }
         private static void Flush()
         {
-            using (LyruisDiagnostics.Flush.Auto()) FlushCore();
+            using (LyruisDiagnostics.Coarse(LyruisDiagnostics.Flush, LyruisDiagnostics.Phase.FlushRequests)) FlushCore();
         }
         private static void FlushCore()
         {

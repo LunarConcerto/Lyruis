@@ -47,7 +47,7 @@ namespace LunarConcerto.Lyruis
         {
             get
             {
-                using (LyruisDiagnostics.Sample(LyruisDiagnostics.RootLookup))
+                using (LyruisDiagnostics.Sample(LyruisDiagnostics.RootLookup, LyruisDiagnostics.Phase.RootLookup))
                 {
                     var node = this;
                     while (node.transform.parent && node.transform.parent.TryGetComponent(out LyruisLayout parent) && parent.IsActive()) node = parent;
@@ -86,7 +86,7 @@ namespace LunarConcerto.Lyruis
         private void OnTransformChildrenChanged() { topologyDirty = true; Refresh(); }
         protected override void OnRectTransformDimensionsChange()
         {
-            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Dimensions))
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Dimensions, LyruisDiagnostics.Phase.DimensionChanged))
             if (IsActive() && Root == this) Refresh();
         }
 #if UNITY_EDITOR

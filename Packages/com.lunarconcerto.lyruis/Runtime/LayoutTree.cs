@@ -7,7 +7,7 @@ namespace LunarConcerto.Lyruis
     {
         internal static void Rebuild(LyruisLayout node)
         {
-            using (LyruisDiagnostics.Rebuild.Auto()) RebuildCore(node);
+            using (LyruisDiagnostics.Coarse(LyruisDiagnostics.Rebuild, LyruisDiagnostics.Phase.Rebuild)) RebuildCore(node);
         }
         private static void RebuildCore(LyruisLayout node)
         {
@@ -16,7 +16,7 @@ namespace LunarConcerto.Lyruis
             root.Rebuilding = true;
             try { Visit(node); }
             finally { root.Rebuilding = false; }
-            using (LyruisDiagnostics.Complete.Auto()) Complete(node);
+            using (LyruisDiagnostics.Coarse(LyruisDiagnostics.Complete, LyruisDiagnostics.Phase.CompletionCallbacks)) Complete(node);
         }
         private static void Complete(LyruisLayout node)
         {
@@ -27,8 +27,8 @@ namespace LunarConcerto.Lyruis
         => rule == SizeMode.Fixed ? fixedValue : rule == SizeMode.Content ? content : keep;
         private static void Visit(LyruisLayout node)
         {
-            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Topology)) node.CollectChildren();
-            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Tracker)) node.Tracker.Clear();
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Topology, LyruisDiagnostics.Phase.CollectChildren)) node.CollectChildren();
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Tracker, LyruisDiagnostics.Phase.ClearDrivenTracker)) node.Tracker.Clear();
             node.Sizes.Clear();
             foreach (var child in node.Children)
             { Visit(child); node.Sizes.Add(child.Measured); }
@@ -37,7 +37,7 @@ namespace LunarConcerto.Lyruis
             Vector2 preferred;
             if (node.Children.Count == 0)
             {
-                using (LyruisDiagnostics.Sample(LyruisDiagnostics.Intrinsic))
+                using (LyruisDiagnostics.Sample(LyruisDiagnostics.Intrinsic, LyruisDiagnostics.Phase.LeafIntrinsicSize))
                 {
                     // uGUI is an intrinsic-size provider only; width is applied before measuring wrapped height.
                     float w = node.WidthMode == SizeMode.Content ? LayoutUtility.GetPreferredWidth(rect) : keep.x;
@@ -49,7 +49,7 @@ namespace LunarConcerto.Lyruis
             }
             else if (node.Mode == LayoutMode.None)
             {
-                using (LyruisDiagnostics.Sample(LyruisDiagnostics.Bounds))
+                using (LyruisDiagnostics.Sample(LyruisDiagnostics.Bounds, LyruisDiagnostics.Phase.ManualBounds))
                 {
                     var bounds = new Bounds(Vector3.zero, Vector3.zero);
                     foreach (var child in node.Children)
@@ -59,12 +59,12 @@ namespace LunarConcerto.Lyruis
             }
             else
             {
-                using (LyruisDiagnostics.Sample(LyruisDiagnostics.Measure))
+                using (LyruisDiagnostics.Sample(LyruisDiagnostics.Measure, LyruisDiagnostics.Phase.MeasureContainer))
                 preferred = LayoutEngine.Measure(node, keep) + new Vector2(node.padding.horizontal, node.padding.vertical);
             }
             node.Measured = new Vector2(Resolve(node.WidthMode, node.FixedSize.x, keep.x, preferred.x),
             Resolve(node.HeightMode, node.FixedSize.y, keep.y, preferred.y));
-            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Self))
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.SelfSize, LyruisDiagnostics.Phase.ApplySelfSize))
             {
                 var driven = DrivenTransformProperties.None;
                 if (node.WidthMode != SizeMode.Keep) driven |= DrivenTransformProperties.SizeDeltaX;
@@ -73,8 +73,8 @@ namespace LunarConcerto.Lyruis
                 if (rect.sizeDelta != node.Measured) rect.sizeDelta = node.Measured;
             }
             if (node.Mode == LayoutMode.None || node.Children.Count == 0) return;
-            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Arrange)) LayoutEngine.Arrange(node);
-            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Children))
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Arrange, LyruisDiagnostics.Phase.ArrangeGeometry)) LayoutEngine.Arrange(node);
+            using (LyruisDiagnostics.Sample(LyruisDiagnostics.Children, LyruisDiagnostics.Phase.ApplyChildRects))
             {
                 for (int i = 0; i < node.Children.Count; i++)
                 {

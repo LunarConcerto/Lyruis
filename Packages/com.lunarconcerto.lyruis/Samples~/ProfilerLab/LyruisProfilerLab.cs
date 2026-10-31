@@ -37,6 +37,45 @@ namespace LunarConcerto.Lyruis.Samples
         public int MutationTicks { get; private set; }
         public LyruisLayout LayoutRoot => root;
         public int TargetCount => targets.Count;
+        public bool AutomationRunning { get; private set; }
+        public sealed class SavedState
+        {
+            internal string[] text;
+            internal bool[] expanded;
+            internal int cursor, ticks, rebuilds;
+            internal Workload workload;
+            internal Vector2 size;
+            internal bool detailed, draw;
+        }
+        public SavedState BeginAutomation()
+        {
+            if (AutomationRunning) throw new InvalidOperationException("The lab is already under automated control.");
+            var state = new SavedState { text = new string[targets.Count], expanded = new bool[targets.Count], cursor = cursor,
+                ticks = MutationTicks, rebuilds = CompletedRebuilds, workload = workload, size = root.FixedSize, detailed = detailedMarkers, draw = drawWorkloadCanvas };
+            for (int i = 0; i < targets.Count; i++) { state.text[i] = targets[i].text.text; state.expanded[i] = targets[i].expandedNow; }
+            AutomationRunning = true;
+            for (int i = 0; i < Math.Min(8, controls.Count); i++) controls[i].interactable = false;
+            return state;
+        }
+        public void PrepareMeasurement(Workload value)
+        {
+            cursor = 0; MutationTicks = 0;
+            foreach (var target in targets) { target.expandedNow = false; target.text.text = target.compact; }
+            root.FixedSize = new Vector2(1840, 0); detailedMarkers = false; ApplySettings(); SetWorkload(value);
+            root.RebuildNow(); Canvas.ForceUpdateCanvases();
+        }
+        public void ShowMeasurementStatus(string message) { if (status) status.text = message; }
+        public void EndAutomation(SavedState state)
+        {
+            if (state == null) return;
+            for (int i = 0; i < targets.Count; i++) { targets[i].text.text = state.text[i]; targets[i].expandedNow = state.expanded[i]; }
+            cursor = state.cursor; MutationTicks = state.ticks;
+            detailedMarkers = state.detailed; drawWorkloadCanvas = state.draw; root.FixedSize = state.size;
+            if (isActiveAndEnabled) ApplySettings();
+            SetWorkload(state.workload); root.RebuildNow(); Canvas.ForceUpdateCanvases(); CompletedRebuilds = state.rebuilds;
+            for (int i = 0; i < Math.Min(8, controls.Count); i++) controls[i].interactable = true;
+            AutomationRunning = false;
+        }
         private int cursor, frames;
         private float nextTick;
         private Workload lastWorkload;
@@ -76,10 +115,12 @@ namespace LunarConcerto.Lyruis.Samples
             controls[5].onClick.AddListener(() => { drawWorkloadCanvas = !drawWorkloadCanvas; ApplySettings(); });
             controls[6].onClick.AddListener(() => { detailedMarkers = !detailedMarkers; ApplySettings(); });
             controls[7].onClick.AddListener(TickOnce);
+            if (controls.Count > 8) controls[8].onClick.AddListener(() => GetComponent<LyruisAutoMeasure>().ToggleMeasurement());
         }
         private void Update()
         {
             ApplySettings();
+            if (AutomationRunning) return;
             if (lastWorkload != workload) { lastWorkload = workload; UpdateStatus(); }
 #if ENABLE_LEGACY_INPUT_MANAGER
             if (Input.GetKeyDown(KeyCode.Alpha1)) SetWorkload(Workload.Idle);
@@ -152,6 +193,8 @@ namespace LunarConcerto.Lyruis.Samples
             Button(controls.transform, "Draw UI: toggle", 974, () => { drawWorkloadCanvas = !drawWorkloadCanvas; ApplySettings(); });
             Button(controls.transform, "Detail: toggle", 1164, () => { detailedMarkers = !detailedMarkers; ApplySettings(); });
             Button(controls.transform, "Single step", 1354, TickOnce);
+            Button(controls.transform, "AUTO REPORT / Stop", 1544, () => GetComponent<LyruisAutoMeasure>().ToggleMeasurement());
+            gameObject.AddComponent<LyruisAutoMeasure>();
             var hint = Label(controls.transform, "Hint", "Scroll to inspect cards. Use Inspector to set interval/batch size. Detail markers add overhead; start with Deep Profile OFF.", 14);
             Place(hint.rectTransform, new Vector2(24, -116), new Vector2(1800, 22));
             workloadCanvas = MakeCanvas("Workload Canvas - disable rendering independently");
