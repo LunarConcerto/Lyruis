@@ -44,6 +44,10 @@ public class PanelSetup : MonoBehaviour
 }
 ```
 
+## 检查器
+
+中英文检查器按布局、尺寸、间距与对齐分组，按模式显示字段，提供九宫格对齐、内边距关联、适应内容／固定当前尺寸和子节点注册。支持多对象编辑、Undo 及原生 Prefab 覆盖。详见[检查器指南](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md)。
+
 ## 布局与尺寸规则
 
 | 模式 | 语义 |

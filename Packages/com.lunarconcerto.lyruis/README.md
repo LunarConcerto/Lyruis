@@ -7,3 +7,5 @@ Independent postorder UI layout tree in `LunarConcerto.Lyruis`. Add LyruisLayout
 [English](https://github.com/LunarConcerto/Lyruis/blob/main/README.md) · [中文](https://github.com/LunarConcerto/Lyruis/blob/main/README.zh-CN.md) · [Architecture](Documentation~/architecture.md)
 
 Import Gallery and Benchmark from Package Manager Samples. Unity 2022.3+, MIT, version 0.1.0 (development).
+
+[Inspector guide / 检查器指南](Documentation~/inspector.md): bilingual grouped controls, sizing shortcuts, alignment picker, linked padding, multi-edit, Undo and Prefab overrides.

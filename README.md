@@ -44,6 +44,10 @@ public class PanelSetup : MonoBehaviour
 }
 ```
 
+## Inspector
+
+The bilingual Inspector groups layout, sizing, spacing and alignment, with mode-specific controls, a nine-point alignment picker, linked padding, Fit content / Freeze size shortcuts and child registration. It supports multi-object editing, Undo and native Prefab overrides. See the [Inspector guide](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md).
+
 ## Rules
 
 | Mode | Semantics |
