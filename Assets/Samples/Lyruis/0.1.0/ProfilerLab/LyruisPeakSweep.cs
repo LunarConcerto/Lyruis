@@ -138,7 +138,7 @@ namespace LunarConcerto.Lyruis.Samples
                 b.AppendLine("| Cards | Nodes | Workload | Median ms | P95 ms | Max ms | P95 > 16.67ms |\n| ---: | ---: | --- | ---: | ---: | ---: | --- |");
                 foreach (var r in report.rows) b.AppendLine(string.Format(CultureInfo.InvariantCulture,"| {0} | {1} | {2} | {3:F3} | {4:F3} | {5:F3} | {6} |",r.cards,r.nodes,r.name,r.medianMs,r.p95Ms,r.maxMs,r.p95Ms>16.67));
                 b.AppendLine("\nRaw timing samples and diagnostic phase totals are retained in adjacent JSON. Geometry file stores 10 Float32 values per node: sizeDelta, anchoredPosition, anchorMin, anchorMax, pivot. Offsets in JSON allow exact before/after comparison. Diagnostic samples are excluded from timing statistics. No existing scene content is overwritten.\n");
-                File.WriteAllText(Path.ChangeExtension(ReportPath,".md"),b.ToString());
+                File.WriteAllText(Path.ChangeExtension(ReportPath,".md"),b.ToString().TrimEnd()+"\n");
                 Debug.Log("Lyruis peak sweep complete: " + ReportPath);
             }
             finally { Cleanup(); }
