@@ -95,3 +95,5 @@ Import **Profiler Lab**, open `ProfilerLab.unity`, and enter Play. The scene con
 The Profiler Lab now includes **AUTO REPORT / Stop** and **Tools > Lyruis > Run Automated Measurement**: it runs five workloads in timing-only and phase-diagnostic passes, exports raw JSON plus Markdown findings, and requires no Profiler window recording. Reports are saved in `BenchmarkResults/AutoMeasure` in the Editor. See the [automatic measurement guide](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md#one-click-automated-measurement--一键自动测量).
 
 Peak scalability sweep: **Tools > Lyruis > Run Peak Sweep (Play Mode)** tests 637–4,241 nodes across six mutation/rebuild workloads and records P95, observed Max and complete geometry snapshots. See [before/after comparison](BenchmarkResults/PeakSweep/README.md). The runtime now skips unchanged combined child transform writes and caches root lookup by a conservatively invalidated topology revision; sizing/placement rules are unchanged.
+
+[Latest benchmark retest (2026-11-01)](BenchmarkResults/Retest-2026-11-01/README.md): 23 tests passed; flat, nested, automatic phase and peak suites rerun without runtime code changes.

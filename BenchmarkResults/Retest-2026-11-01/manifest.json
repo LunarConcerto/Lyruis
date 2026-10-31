@@ -1,0 +1,44 @@
+{
+  "local_date": "2026-11-01",
+  "timezone": "Asia/Hong_Kong",
+  "runtime_commit": "54b5e16564081a8263340e72c95c38266b050036",
+  "runtime_changes": false,
+  "unity": "2022.3.62f3",
+  "profiler_recording": false,
+  "tests": {
+    "EditMode": {
+      "passed": 21,
+      "failed": 0
+    },
+    "PlayMode": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "microbenchmark_geometry_cases": 17,
+  "microbenchmark_max_geometry_error": 0,
+  "peak_geometry_cases": 24,
+  "peak_max_geometry_difference_from_previous_optimized_capture": 0,
+  "evidence": [
+    {
+      "path": "BenchmarkResults/Retest-2026-11-01/flat.json",
+      "sha256": "04596cca4febffc2c81c381bb35a05b3f9b340e8dbe5793f534ac937340c12bb"
+    },
+    {
+      "path": "BenchmarkResults/Retest-2026-11-01/nested.json",
+      "sha256": "68cabfa373e29ea95c50944d0341b918d4fbe3cac200c96182482d6d3e8d3b54"
+    },
+    {
+      "path": "BenchmarkResults/AutoMeasure/measurement-20261031-161523-140.json",
+      "sha256": "9efc586cde2668839165ffd60c95b267d0b3b553897ad882e93023e5822dc4fc"
+    },
+    {
+      "path": "BenchmarkResults/PeakSweep/peak-retest-20261101-20261031-161604.json",
+      "sha256": "2c861f63448a7066afe06ed39086249da2f53708813db9113f53be8eb81d7f1a"
+    },
+    {
+      "path": "BenchmarkResults/PeakSweep/peak-retest-20261101-20261031-161604.geometry.bin",
+      "sha256": "e3c4df6110a7f21b9b8f2874e18b20dcf882db298ecf41aead591ea2ee45b511"
+    }
+  ]
+}

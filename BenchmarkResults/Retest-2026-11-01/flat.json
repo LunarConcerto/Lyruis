@@ -1,0 +1,95 @@
+{
+    "unity": "2022.3.62f3",
+    "platform": "WindowsEditor",
+    "processor": "AMD Ryzen 9 9950X 16-Core Processor ",
+    "utc": "2026-10-31T16:14:23.6819562Z",
+    "editor": true,
+    "playMode": false,
+    "engine": "Lyruis independent postorder tree",
+    "warmup": 20,
+    "samples": 40,
+    "rebuildsPerSample": 10,
+    "results": [
+        {
+            "mode": "Horizontal",
+            "children": 10,
+            "lyruisMedianMs": 0.070415,
+            "nativeMedianMs": 0.194455,
+            "lyruisP95Ms": 0.07167,
+            "nativeP95Ms": 0.19666999999999999,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Horizontal",
+            "children": 100,
+            "lyruisMedianMs": 0.667895,
+            "nativeMedianMs": 1.84808,
+            "lyruisP95Ms": 0.70577,
+            "nativeP95Ms": 1.92575,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Horizontal",
+            "children": 1000,
+            "lyruisMedianMs": 4.930075,
+            "nativeMedianMs": 14.360164999999999,
+            "lyruisP95Ms": 6.579859999999999,
+            "nativeP95Ms": 17.52234,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Vertical",
+            "children": 10,
+            "lyruisMedianMs": 0.04846,
+            "nativeMedianMs": 0.11682999999999999,
+            "lyruisP95Ms": 0.07314000000000001,
+            "nativeP95Ms": 0.2022,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Vertical",
+            "children": 100,
+            "lyruisMedianMs": 0.46309500000000006,
+            "nativeMedianMs": 1.262725,
+            "lyruisP95Ms": 0.57793,
+            "nativeP95Ms": 1.51014,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Vertical",
+            "children": 1000,
+            "lyruisMedianMs": 5.07605,
+            "nativeMedianMs": 14.49333,
+            "lyruisP95Ms": 5.8482,
+            "nativeP95Ms": 17.65369,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Grid",
+            "children": 10,
+            "lyruisMedianMs": 0.04752,
+            "nativeMedianMs": 0.07104,
+            "lyruisP95Ms": 0.07403,
+            "nativeP95Ms": 0.09022,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Grid",
+            "children": 100,
+            "lyruisMedianMs": 0.60769,
+            "nativeMedianMs": 0.6753,
+            "lyruisP95Ms": 0.7280800000000001,
+            "nativeP95Ms": 0.9039699999999999,
+            "maxGeometryError": 0.0
+        },
+        {
+            "mode": "Grid",
+            "children": 1000,
+            "lyruisMedianMs": 5.65095,
+            "nativeMedianMs": 6.20723,
+            "lyruisP95Ms": 7.50115,
+            "nativeP95Ms": 8.24983,
+            "maxGeometryError": 0.0
+        }
+    ]
+}

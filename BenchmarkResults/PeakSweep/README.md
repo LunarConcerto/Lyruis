@@ -1,5 +1,7 @@
 # Peak sweep comparison / 峰值扫描与优化
 
+Latest same-runtime retest / 最新复测：[2026-11-01](../Retest-2026-11-01/README.md).
+
 Unity 2022.3.62f3; AMD Ryzen 9 9950X 16-Core Processor ; 1366x768; 40 samples/config; 6 warmups; external Profiler False.
 
 Operations include one explicit Canvas flush. Root4 issues four synchronous rebuilds inside the same operation; other workloads issue one mutation/rebuild. These are operation costs, not measured FPS or guaranteed hardware limits. Max is the largest observed sample. Timing excludes detailed diagnostic counters; separate phase totals are retained in JSON.

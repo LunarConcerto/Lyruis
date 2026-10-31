@@ -1,5 +1,7 @@
 # Nested benchmark / 复杂嵌套测试
 
+Latest retest / 最新复测：[2026-11-01](Retest-2026-11-01/README.md).
+
 Measured on Unity 2022.3.62f3 / Windows Editor, Edit mode, Ryzen 9 9950X, 2026-10-31 (Asia/Hong_Kong). Lyruis uses its independent postorder tree; native uGUI uses LayoutRebuilder. No Canvas or Graphics in the test trees. Setup, warmup and validation are excluded from timing. 20 warmups, 40 paired batches alternating execution order, 10 rebuilds per batch. Median averages entries 20/21; P95 uses nearest-rank entry 38. Units: ms/rebuild. These measure explicit full rebuilds, not FPS, rendering, GC or normal dirty scheduling. Player results remain unverified.
 
 当前数据来自独立树执行模型，不是此前 LayoutGroup 适配版。Lyruis 一侧的每个参与节点都挂组件；容器直接读取子节点计算结果，只有 Content 叶子查询 LayoutUtility。原生侧使用原生布局和 LayoutElement。两侧先验证几何，再比较耗时。历史 JSON 保留用于追溯，不应混作同一实现的结果。

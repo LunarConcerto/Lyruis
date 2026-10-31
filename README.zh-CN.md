@@ -97,3 +97,5 @@ PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root 
 新增 **AUTO REPORT / Stop** 按钮和 **Tools > Lyruis > Run Automated Measurement** 菜单：自动执行五类负载的总耗时与阶段诊断双轮测试，输出原始 JSON、Markdown 表格及规则分析，无需打开 Profiler 录制。Editor 报告保存在 `BenchmarkResults/AutoMeasure`。详见[自动测量说明](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。
 
 新增峰值扫描菜单 **Tools > Lyruis > Run Peak Sweep (Play Mode)**：覆盖637至4,241节点、六类负载，记录P95、观测Max及全量布局坐标。参见[优化前后对比](BenchmarkResults/PeakSweep/README.md)。本轮优化合并并跳过无变化的子节点变换写入，并按拓扑版本缓存根节点；尺寸与排布规则不变。
+
+[最新 Benchmark 复测（2026-11-01）](BenchmarkResults/Retest-2026-11-01/README.md)：23项测试通过；在未修改运行代码的情况下，重跑了平铺、嵌套、自动阶段测量及峰值扫描。

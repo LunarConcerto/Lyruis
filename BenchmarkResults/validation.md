@@ -37,3 +37,7 @@ Not verified: other Unity versions, player builds, GC rates, separate consumer-p
 - Binary geometry comparison checks all nodes' dimensions, positions, anchors and pivots across all configurations; maximum absolute coordinate difference .000031, below .01. Root completion counts match expected 1 or 4.
 - Reports preserve median, P95, observed Max and regressions rather than asserting a universal speedup. Existing algorithm/Flow/Grid/None semantics remain unchanged.
 - Source scenes were not regenerated or overwritten by the sweep. Editor-only captures; no target-player validation or full-frame FPS/capacity claim.
+
+## Full retest — 2026-11-01 (Asia/Hong_Kong)
+
+Runtime 54b5e16; no code changes. 21 EditMode and 2 PlayMode tests passed. Nine flat and eight nested geometry comparisons have zero error; ten automatic two-pass cases completed; all 24 peak configurations have identical stored geometry to the previous optimized capture and expected root completion counts. Profiler recording was disabled. Raw evidence and hashes: [retest manifest](Retest-2026-11-01/manifest.json).
