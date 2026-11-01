@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add a transparent lyre-and-star logo (Lyra + UI), shared by repository/package READMEs and persistent Unity script icons for the core runtime and Editor scripts.
 - Rename the Unity package to `cafe.lunarconcerto.lyruis` and set the author website to https://lunarconcerto.cafe; update installation paths and development-project references. Namespace and asset GUIDs remain unchanged.
 - Redesign LyruisLayout Inspector with English/Chinese controls, mode-specific fields, alignment matrix, linked padding, sizing shortcuts and layout context.
 - Support mixed multi-object edits, native Prefab override menus and undoable missing-child registration; add Flow and native-controller guidance.

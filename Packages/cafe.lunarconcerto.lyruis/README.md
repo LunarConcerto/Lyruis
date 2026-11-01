@@ -1,4 +1,10 @@
+<p align="center">
+  <img src="Editor/Icons/Lyruis.png" width="128" alt="Lyruis logo">
+</p>
+
 # Lyruis
+
+**Lyra + UI** — a Unity uGUI enhancement framework, currently centered on single-component layouts. The text-free lyre-and-star mark represents the wider framework rather than a specific layout mode.
 
 Independent postorder UI layout tree in `LunarConcerto.Lyruis`. Add LyruisLayout to containers **and every participating child**. Supports None, Horizontal, Vertical, Grid, Flow and Overlay, with Keep / Fixed / Content sizing. Core execution does not use LayoutGroup/LayoutRebuilder; intrinsic Content leaf sizes may come from uGUI.
 

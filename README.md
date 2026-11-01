@@ -1,10 +1,14 @@
+<p align="center">
+  <img src="Packages/cafe.lunarconcerto.lyruis/Editor/Icons/Lyruis.png" width="160" alt="Lyruis logo">
+</p>
+
 # Lyruis
 
 [简体中文](README.zh-CN.md)
 
 **Compose nested Unity UI with one consistent layout component.**
 
-Lyruis is a uGUI layout framework by LunarConcerto, focused on a convenient authoring workflow: choose an arrangement, define width and height independently, and tune the result in a bilingual Inspector. Containers and participating children use the same `LyruisLayout` component, from a simple row to a nested dashboard.
+Lyruis is a UI enhancement framework for Unity uGUI by LunarConcerto. Its name combines **Lyra + UI**, represented by a lyre and a small star. The current core focuses on a convenient layout workflow: choose an arrangement, define width and height independently, and tune the result in a bilingual Inspector. Containers and participating children use the same `LyruisLayout` component, from a simple row to a nested dashboard.
 
 Version 0.1.0 (development), MIT. Verified on Unity 2022.3.62f3 / Windows Editor; other Unity versions and target players remain unverified.
 

@@ -1,10 +1,14 @@
+<p align="center">
+  <img src="Packages/cafe.lunarconcerto.lyruis/Editor/Icons/Lyruis.png" width="160" alt="Lyruis 标志">
+</p>
+
 # Lyruis
 
 [English](README.md)
 
 **用一套组件与配置方式，搭建复杂嵌套的 Unity UI。**
 
-Lyruis 是 LunarConcerto 开发的 uGUI 布局框架，重点放在开发体验：选择排布方式，独立配置宽高，再通过双语 Inspector 调整效果。从简单横排到多层嵌套仪表盘，容器和参与子节点统一使用 `LyruisLayout` 组件。
+Lyruis 是 LunarConcerto 开发的 Unity uGUI 能力增强框架，名称来自 **Lyra + UI**，以竖琴与星芒作为标志。当前核心功能聚焦布局与开发体验：选择排布方式，独立配置宽高，再通过双语 Inspector 调整效果。从简单横排到多层嵌套仪表盘，容器和参与子节点统一使用 `LyruisLayout` 组件。
 
 版本 0.1.0（开发中），沿用 MIT 许可证。已验证 Unity 2022.3.62f3 / Windows Editor；其他版本和目标 Player 尚未验证。
 
