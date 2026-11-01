@@ -8,7 +8,7 @@
 
 **用一套组件与配置方式，搭建复杂嵌套的 Unity UI。**
 
-Lyruis 是 LunarConcerto 开发的 Unity uGUI 能力增强框架，名称来自 **Lyra + UI**，以竖琴与星芒作为标志。当前核心功能聚焦布局与开发体验：选择排布方式，独立配置宽高，再通过双语 Inspector 调整效果。从简单横排到多层嵌套仪表盘，容器和参与子节点统一使用 `LyruisLayout` 组件。
+Lyruis 是 LunarConcerto 开发的 Unity uGUI 能力增强框架。当前核心功能聚焦布局与开发体验：选择排布方式，独立配置宽高，再通过双语 Inspector 调整效果。从简单横排到多层嵌套仪表盘，容器和参与子节点统一使用 `LyruisLayout` 组件。
 
 版本 0.1.0（开发中），沿用 MIT 许可证。已验证 Unity 2022.3.62f3 / Windows Editor；其他版本和目标 Player 尚未验证。
 
@@ -40,7 +40,7 @@ Package Manager → Add package from git URL：
 https://github.com/LunarConcerto/Lyruis.git?path=/Packages/cafe.lunarconcerto.lyruis
 ```
 
-包标识为 `cafe.lunarconcerto.lyruis`，对应个人网站 [lunarconcerto.cafe](https://lunarconcerto.cafe)。追加 `#<提交 SHA>` 可锁定版本。要求 Unity 2022.3+，依赖 uGUI（包已声明）。仓库是开发工程，安装包子目录不会安装开发工程中的 MCP 等工具。
+追加 `#<提交 SHA>` 可锁定版本。要求 Unity 2022.3+，依赖 uGUI（包已声明）。
 
 ## 快速开始
 
