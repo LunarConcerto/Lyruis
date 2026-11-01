@@ -2,9 +2,31 @@
 
 [简体中文](README.zh-CN.md)
 
-Single-component uGUI layout framework by LunarConcerto. **The core runs its own component tree, postorder sizing and geometry calculation. It does not inherit LayoutGroup or use LayoutRebuilder to execute Lyruis layouts.** Unity LayoutUtility is used only for intrinsic sizes of Content leaves.
+**Compose nested Unity UI with one consistent layout component.**
+
+Lyruis is a uGUI layout framework by LunarConcerto, focused on a convenient authoring workflow: choose an arrangement, define width and height independently, and tune the result in a bilingual Inspector. Containers and participating children use the same `LyruisLayout` component, from a simple row to a nested dashboard.
 
 Version 0.1.0 (development), MIT. Verified on Unity 2022.3.62f3 / Windows Editor; other Unity versions and target players remain unverified.
+
+[Inspector guide](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md) · [Samples and profiling](#interactive-profiler-lab) · [Benchmark results](BenchmarkResults/README.md) · [Architecture](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)
+
+## Highlights
+
+| Feature | What it gives you |
+| --- | --- |
+| **One component, six arrangements** | Horizontal, Vertical, Grid, Flow, Overlay and manual-position None share the same sizing, spacing and alignment settings. Switch arrangements without replacing the component or resetting size rules. |
+| **Independent width and height** | Keep authored dimensions, set Fixed values, or fit Content on each axis. Build fixed-width, content-height panels and combine different rules throughout the hierarchy. |
+| **Child-first nested sizing** | Children resolve their dimensions before containers measure and arrange them. The independent layout tree reuses those results within each rebuild, avoiding recursive size recalculation through getters. |
+| **Flow and flexible item sizes** | Wrap horizontally or vertically with per-line and per-item alignment. Grid defines slots while preserving each child's own calculated size. None lets manually placed subtrees contribute their bounds to Content sizing. |
+| **Editor workflow built in** | EN/中文 Inspector, mode-specific fields, nine-point alignment, linked padding, Fit content / Freeze size, missing-child registration and root navigation. Multi-object edits, Undo/Redo and native Prefab overrides are supported. |
+| **Explicit, batched updates** | `Refresh()` coalesces deferred requests at connected roots; immediate rebuild APIs remain available. Cached membership/root lookup and skipped unchanged RectTransform writes reduce repeated work. |
+| **Tools to inspect real layouts** | Importable Gallery, matched native uGUI benchmarks and a 1,273-node Profiler Lab. Automatic timing/phase reports and 637–4,241-node peak sweeps retain raw samples and geometry for comparison. |
+
+Use Lyruis for nested menus, content-sized panels, wrapping tags, card dashboards and mixed manual/automatic UI. Every participating child needs `LyruisLayout`; the Inspector can register missing direct children while keeping their current sizes.
+
+**The core owns its component tree, postorder sizing and geometry calculation.** It does not inherit LayoutGroup or use LayoutRebuilder to execute Lyruis layouts. Unity LayoutUtility supplies intrinsic sizes only for Content leaves.
+
+The [latest native uGUI comparison](BenchmarkResults/README.md) validates matching geometry in all 17 flat/nested cases. In that Editor capture, nested explicit rebuilds were 3.24–3.77× faster; Grid differences were smaller. These are measurements of the documented workloads, not whole-frame FPS or a universal speedup. The project prioritizes useful layout controls and a consistent editing experience, with performance evidence available to inspect.
 
 ## Install
 

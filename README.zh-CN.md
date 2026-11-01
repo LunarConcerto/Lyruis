@@ -2,9 +2,31 @@
 
 [English](README.md)
 
-LunarConcerto 的单组件 uGUI 布局框架。**核心采用独立组件树、子节点优先的尺寸计算和自定义排布，不继承 LayoutGroup，也不通过 LayoutRebuilder 执行 Lyruis 布局。** 只有 Content 叶子节点使用 LayoutUtility 获取自身内容首选尺寸。
+**用一套组件与配置方式，搭建复杂嵌套的 Unity UI。**
+
+Lyruis 是 LunarConcerto 开发的 uGUI 布局框架，重点放在开发体验：选择排布方式，独立配置宽高，再通过双语 Inspector 调整效果。从简单横排到多层嵌套仪表盘，容器和参与子节点统一使用 `LyruisLayout` 组件。
 
 版本 0.1.0（开发中），沿用 MIT 许可证。已验证 Unity 2022.3.62f3 / Windows Editor；其他版本和目标 Player 尚未验证。
+
+[检查器指南](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md) · [示例与性能分析](#profiler-交互场景) · [性能实测](BenchmarkResults/README.md) · [架构说明](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)
+
+## 框架亮点
+
+| 特性 | 使用价值 |
+| --- | --- |
+| **一个组件，六种排布** | 横向、纵向、网格、换行、叠放及保留手动位置的 None 共用尺寸、间距与对齐配置。切换排布无需更换组件，也不会重置尺寸规则。 |
+| **宽高独立配置** | 每个轴分别选择 Keep 保持、Fixed 固定或 Content 内容自适应，方便组合固定宽度、自适应高度及不同层级的尺寸规则。 |
+| **子节点优先的嵌套计算** | 先确定子节点尺寸，再计算容器尺寸并排布。独立布局树在一次重建内复用计算结果，避免通过 getter 反复递归求尺寸。 |
+| **换行与独立子项尺寸** | Flow 支持横向换行、纵向换列，并分别处理每行及行内子项对齐。Grid 定义格子但保留子项自身尺寸；None 支持手动排布子树按包围盒参与内容尺寸计算。 |
+| **完整的编辑器操作** | 中英文 Inspector、按模式显示字段、九宫格对齐、关联内边距、适应内容／固定当前尺寸、补齐子组件和根节点导航。支持多选编辑、Undo/Redo 及原生 Prefab 覆盖。 |
+| **显式刷新与请求合并** | `Refresh()` 将延迟请求合并到相连根节点，同时保留立即重建 API。缓存子节点与根节点查找，跳过未变化的 RectTransform 写入，减少重复工作。 |
+| **可直接使用的测量工具** | 可导入的 Gallery、原生 uGUI 几何等价对照，以及含 1,273 个节点的 Profiler Lab。自动计时与阶段报告、637–4,241 节点峰值扫描保留原始样本和几何数据。 |
+
+适合嵌套菜单、内容自适应面板、换行标签、卡片仪表盘，以及手动与自动排布混合的界面。每个参与布局的子节点都需挂载 `LyruisLayout`；Inspector 可以为缺少组件的直接子节点一键补齐，并保持当前尺寸。
+
+**核心采用独立组件树、子节点优先的尺寸计算和自定义排布。** 不继承 LayoutGroup，也不通过 LayoutRebuilder 执行 Lyruis 布局；只有 Content 叶子节点使用 LayoutUtility 获取自身内容首选尺寸。
+
+[最新原生 uGUI 对比](BenchmarkResults/README.md)的 17 组平铺与嵌套用例均通过几何一致性检查。在该次 Editor 采样中，嵌套显式重建耗时对应约 3.24–3.77 倍加速，Grid 差距较小。这些结果只描述报告中的测试负载，不代表完整帧率或所有场景。项目优先打磨布局操作与一致的编辑体验，同时提供可追溯的性能证据。
 
 ## 安装
 
