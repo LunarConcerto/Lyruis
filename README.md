@@ -78,7 +78,7 @@ Child membership is cached and invalidated by hierarchy/enable/disable changes. 
 
 Import Gallery and Benchmark from Package Manager Samples. The development project already has them at `Assets/Samples/Lyruis/0.1.0`. Gallery contains linear, grid, flow, overlay and nested examples. Benchmark.unity runs flat and nested suites on Play; Console logs JSON output paths under Application.persistentDataPath.
 
-Development menus: **Tools > Lyruis > Generate Sample Scenes**, **Run Benchmark And Save Report**, **Run Nested Benchmark And Save Report**. See [flat results](BenchmarkResults/README.md), [nested results](BenchmarkResults/nested.md), and [validation](BenchmarkResults/validation.md). Lyruis calls its own RebuildNow; native groups call LayoutRebuilder.ForceRebuildLayoutImmediate. Trees are configured for matching geometry. Results measure explicit rebuilds, not application FPS or automatic Canvas scheduling. The earlier LayoutGroup-adapter measurements are retained as historical JSON and do not describe this implementation.
+Development menus: **Tools > Lyruis > Generate Sample Scenes**, **Run Benchmark And Save Report**, **Run Nested Benchmark And Save Report**. See [benchmark results and validation](BenchmarkResults/README.md). Lyruis calls its own RebuildNow; native groups call LayoutRebuilder.ForceRebuildLayoutImmediate. Trees are configured for matching geometry. Results measure explicit rebuilds, not application FPS or automatic Canvas scheduling. The earlier LayoutGroup-adapter measurements are retained as historical JSON and do not describe this implementation.
 
 Run `LunarConcerto.Lyruis.Tests` in Test Runner EditMode; the project manifest enables package tests via testables. Tests cover postorder content sizing, registered membership, legacy grid sizing, manual None bounds, line alignment, Keep/stretch, callbacks and hierarchy changes. Player builds and separate-project sample import remain unverified.
 
@@ -100,4 +100,4 @@ The Profiler Lab now includes **AUTO REPORT / Stop** and **Tools > Lyruis > Run 
 
 Peak scalability sweep: **Tools > Lyruis > Run Peak Sweep (Play Mode)** tests 637–4,241 nodes across six mutation/rebuild workloads and records P95, observed Max and complete geometry snapshots. See [before/after comparison](BenchmarkResults/PeakSweep/README.md). The runtime now skips unchanged combined child transform writes and caches root lookup by a conservatively invalidated topology revision; sizing/placement rules are unchanged.
 
-[Latest benchmark retest (2026-11-01)](BenchmarkResults/Retest-2026-11-01/README.md): 23 tests passed; flat, nested, automatic phase and peak suites rerun without runtime code changes.
+[Latest benchmark retest (2026-11-01)](BenchmarkResults/README.md): 23 tests passed; flat, nested, automatic phase and peak suites rerun without runtime code changes.

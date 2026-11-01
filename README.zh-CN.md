@@ -80,7 +80,7 @@ Keep 保留 sizeDelta，包括拉伸锚点的节点。Fixed 读取 FixedSize。C
 
 Package Manager 的 Samples 可导入 Gallery 与 Benchmark。开发工程已导入到 Assets/Samples/Lyruis/0.1.0。Gallery 包含横排、竖排、网格、Flow、Overlay 与嵌套布局。Benchmark 场景进入 Play 后运行平铺和嵌套测试，Console 输出 Application.persistentDataPath 下两个 JSON 的路径。
 
-开发菜单：Tools > Lyruis > Generate Sample Scenes、Run Benchmark And Save Report、Run Nested Benchmark And Save Report。参见[平铺实测](BenchmarkResults/README.md)、[嵌套实测](BenchmarkResults/nested.md)和[验证记录](BenchmarkResults/validation.md)。Lyruis 调用自己的 RebuildNow，原生侧调用 LayoutRebuilder.ForceRebuildLayoutImmediate。测试构建几何等价的树，不代表完整应用 FPS 或 Canvas 自动调度。此前 LayoutGroup 适配版的数据保留为 historical JSON，不代表当前实现。
+开发菜单：Tools > Lyruis > Generate Sample Scenes、Run Benchmark And Save Report、Run Nested Benchmark And Save Report。参见[性能实测与验证记录](BenchmarkResults/README.md)。Lyruis 调用自己的 RebuildNow，原生侧调用 LayoutRebuilder.ForceRebuildLayoutImmediate。测试构建几何等价的树，不代表完整应用 FPS 或 Canvas 自动调度。此前 LayoutGroup 适配版的数据保留为 historical JSON，不代表当前实现。
 
 在 Test Runner 的 EditMode 中运行 LunarConcerto.Lyruis.Tests；开发工程通过 testables 启用包测试。覆盖子节点优先测量、注册节点、旧版 Grid 尺寸、None 包围盒、逐行对齐、Keep／拉伸、回调与层级变化。尚未验证 Player 构建与独立消费工程的样例导入。
 
@@ -102,4 +102,4 @@ PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root 
 
 新增峰值扫描菜单 **Tools > Lyruis > Run Peak Sweep (Play Mode)**：覆盖637至4,241节点、六类负载，记录P95、观测Max及全量布局坐标。参见[优化前后对比](BenchmarkResults/PeakSweep/README.md)。本轮优化合并并跳过无变化的子节点变换写入，并按拓扑版本缓存根节点；尺寸与排布规则不变。
 
-[最新 Benchmark 复测（2026-11-01）](BenchmarkResults/Retest-2026-11-01/README.md)：23项测试通过；在未修改运行代码的情况下，重跑了平铺、嵌套、自动阶段测量及峰值扫描。
+[最新 Benchmark 复测（2026-11-01）](BenchmarkResults/README.md)：23项测试通过；在未修改运行代码的情况下，重跑了平铺、嵌套、自动阶段测量及峰值扫描。
