@@ -8,7 +8,7 @@ Lyruis is a uGUI layout framework by LunarConcerto, focused on a convenient auth
 
 Version 0.1.0 (development), MIT. Verified on Unity 2022.3.62f3 / Windows Editor; other Unity versions and target players remain unverified.
 
-[Inspector guide](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md) · [Samples and profiling](#interactive-profiler-lab) · [Benchmark results](BenchmarkResults/README.md) · [Architecture](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)
+[Inspector guide](Packages/cafe.lunarconcerto.lyruis/Documentation~/inspector.md) · [Samples and profiling](#interactive-profiler-lab) · [Benchmark results](BenchmarkResults/README.md) · [Architecture](Packages/cafe.lunarconcerto.lyruis/Documentation~/architecture.md)
 
 ## Highlights
 
@@ -33,10 +33,10 @@ The [latest native uGUI comparison](BenchmarkResults/README.md) validates matchi
 Package Manager → Add package from git URL:
 
 ```text
-https://github.com/LunarConcerto/Lyruis.git?path=/Packages/com.lunarconcerto.lyruis
+https://github.com/LunarConcerto/Lyruis.git?path=/Packages/cafe.lunarconcerto.lyruis
 ```
 
-Append `#<commit SHA>` to pin a revision. Requires Unity 2022.3+ and uGUI (declared dependency). This repository is a development project; installing the package subdirectory does not install its MCP/editor development dependencies.
+Package ID: `cafe.lunarconcerto.lyruis`, based on [lunarconcerto.cafe](https://lunarconcerto.cafe). Append `#<commit SHA>` to pin a revision. Requires Unity 2022.3+ and uGUI (declared dependency). This repository is a development project; installing the package subdirectory does not install its MCP/editor development dependencies.
 
 ## Quick start
 
@@ -68,7 +68,7 @@ public class PanelSetup : MonoBehaviour
 
 ## Inspector
 
-The bilingual Inspector groups layout, sizing, spacing and alignment, with mode-specific controls, a nine-point alignment picker, linked padding, Fit content / Freeze size shortcuts and child registration. It supports multi-object editing, Undo and native Prefab overrides. See the [Inspector guide](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md).
+The bilingual Inspector groups layout, sizing, spacing and alignment, with mode-specific controls, a nine-point alignment picker, linked padding, Fit content / Freeze size shortcuts and child registration. It supports multi-object editing, Undo and native Prefab overrides. See the [Inspector guide](Packages/cafe.lunarconcerto.lyruis/Documentation~/inspector.md).
 
 ## Rules
 
@@ -106,19 +106,19 @@ Run `LunarConcerto.Lyruis.Tests` in Test Runner EditMode; the project manifest e
 
 ## Architecture and provenance
 
-Runtime is split into `LyruisLayout` (single component/API and hierarchy events), `LayoutScheduler` (root request batching), `LayoutTree` (postorder size resolution and RectTransform writes), and `LayoutEngine` (geometry). Inspector is a separate Editor assembly. [Architecture and migration](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md).
+Runtime is split into `LyruisLayout` (single component/API and hierarchy events), `LayoutScheduler` (root request batching), `LayoutTree` (postorder size resolution and RectTransform writes), and `LayoutEngine` (geometry). Inspector is a separate Editor assembly. [Architecture and migration](Packages/cafe.lunarconcerto.lyruis/Documentation~/architecture.md).
 
 The archived implementation was read to preserve its computational model and layout semantics, then implemented with new structure and code. Company-specific helpers, logging, assets and the old namespace are not included. This is not a formally isolated clean-room process or a claim of rights clearance. The repository's MIT license is retained.
 
-There is no automatic migration of old components or serialized fields. Rebuild representative prefabs and validate their appearance. In particular, this revision corrects the earlier Lyruis adapter's behavior: register children explicitly, Grid no longer stretches them, None is distinct from Overlay, and Keep means sizeDelta. Contributions should include Unity version, a minimal reproduction and expected geometry. [Changelog](Packages/com.lunarconcerto.lyruis/CHANGELOG.md).
+There is no automatic migration of old components or serialized fields. Rebuild representative prefabs and validate their appearance. In particular, this revision corrects the earlier Lyruis adapter's behavior: register children explicitly, Grid no longer stretches them, None is distinct from Overlay, and Keep means sizeDelta. Contributions should include Unity version, a minimal reproduction and expected geometry. [Changelog](Packages/cafe.lunarconcerto.lyruis/CHANGELOG.md).
 
 PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root request coalescing / 延迟尺寸计算与根请求合并).
 
 ## Interactive Profiler Lab
 
-Import **Profiler Lab**, open `ProfilerLab.unity`, and enter Play. The scene contains 24 cards, 1,273 layout nodes, depth 6, 168 mutable text leaves, and Horizontal/Vertical/Grid/Flow/None containers. Choose Idle, Single Leaf, Batch Leaves, Force Root Every Frame, or Resize Root from the on-screen buttons. Rendering and detailed markers can be toggled independently. See the [profiling guide](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md). Development menu: **Tools > Lyruis > Generate Profiler Lab Scene**.
+Import **Profiler Lab**, open `ProfilerLab.unity`, and enter Play. The scene contains 24 cards, 1,273 layout nodes, depth 6, 168 mutable text leaves, and Horizontal/Vertical/Grid/Flow/None containers. Choose Idle, Single Leaf, Batch Leaves, Force Root Every Frame, or Resize Root from the on-screen buttons. Rendering and detailed markers can be toggled independently. See the [profiling guide](Packages/cafe.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md). Development menu: **Tools > Lyruis > Generate Profiler Lab Scene**.
 
-The Profiler Lab now includes **AUTO REPORT / Stop** and **Tools > Lyruis > Run Automated Measurement**: it runs five workloads in timing-only and phase-diagnostic passes, exports raw JSON plus Markdown findings, and requires no Profiler window recording. Reports are saved in `BenchmarkResults/AutoMeasure` in the Editor. See the [automatic measurement guide](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md#one-click-automated-measurement--一键自动测量).
+The Profiler Lab now includes **AUTO REPORT / Stop** and **Tools > Lyruis > Run Automated Measurement**: it runs five workloads in timing-only and phase-diagnostic passes, exports raw JSON plus Markdown findings, and requires no Profiler window recording. Reports are saved in `BenchmarkResults/AutoMeasure` in the Editor. See the [automatic measurement guide](Packages/cafe.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md#one-click-automated-measurement--一键自动测量).
 
 Peak scalability sweep: **Tools > Lyruis > Run Peak Sweep (Play Mode)** tests 637–4,241 nodes across six mutation/rebuild workloads and records P95, observed Max and complete geometry snapshots. See [before/after comparison](BenchmarkResults/PeakSweep/README.md). The runtime now skips unchanged combined child transform writes and caches root lookup by a conservatively invalidated topology revision; sizing/placement rules are unchanged.
 

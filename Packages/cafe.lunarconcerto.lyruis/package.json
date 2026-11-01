@@ -1,12 +1,12 @@
 {
-  "name": "com.lunarconcerto.lyruis",
+  "name": "cafe.lunarconcerto.lyruis",
   "version": "0.1.0",
   "displayName": "Lyruis",
   "description": "Composable single-component uGUI layouts.",
   "unity": "2022.3",
   "author": {
     "name": "LunarConcerto",
-    "url": "https://github.com/LunarConcerto"
+    "url": "https://lunarconcerto.cafe"
   },
   "dependencies": {
     "com.unity.ugui": "1.0.0"

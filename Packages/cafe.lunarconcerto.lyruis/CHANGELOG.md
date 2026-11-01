@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Rename the Unity package to `cafe.lunarconcerto.lyruis` and set the author website to https://lunarconcerto.cafe; update installation paths and development-project references. Namespace and asset GUIDs remain unchanged.
 - Redesign LyruisLayout Inspector with English/Chinese controls, mode-specific fields, alignment matrix, linked padding, sizing shortcuts and layout context.
 - Support mixed multi-object edits, native Prefab override menus and undoable missing-child registration; add Flow and native-controller guidance.
 - Verify Inspector interactions through Windows computer-use in Unity 2022.3.62f3; runtime calculation remains unchanged.

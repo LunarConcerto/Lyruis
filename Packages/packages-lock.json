@@ -17,8 +17,8 @@
       },
       "hash": "81542a7e86292b5c4c21b1782c5af23b567f45ce"
     },
-    "com.lunarconcerto.lyruis": {
-      "version": "file:com.lunarconcerto.lyruis",
+    "cafe.lunarconcerto.lyruis": {
+      "version": "file:cafe.lunarconcerto.lyruis",
       "depth": 0,
       "source": "embedded",
       "dependencies": {

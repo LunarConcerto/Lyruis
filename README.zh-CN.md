@@ -8,7 +8,7 @@ Lyruis 是 LunarConcerto 开发的 uGUI 布局框架，重点放在开发体验�
 
 版本 0.1.0（开发中），沿用 MIT 许可证。已验证 Unity 2022.3.62f3 / Windows Editor；其他版本和目标 Player 尚未验证。
 
-[检查器指南](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md) · [示例与性能分析](#profiler-交互场景) · [性能实测](BenchmarkResults/README.md) · [架构说明](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)
+[检查器指南](Packages/cafe.lunarconcerto.lyruis/Documentation~/inspector.md) · [示例与性能分析](#profiler-交互场景) · [性能实测](BenchmarkResults/README.md) · [架构说明](Packages/cafe.lunarconcerto.lyruis/Documentation~/architecture.md)
 
 ## 框架亮点
 
@@ -33,10 +33,10 @@ Lyruis 是 LunarConcerto 开发的 uGUI 布局框架，重点放在开发体验�
 Package Manager → Add package from git URL：
 
 ```text
-https://github.com/LunarConcerto/Lyruis.git?path=/Packages/com.lunarconcerto.lyruis
+https://github.com/LunarConcerto/Lyruis.git?path=/Packages/cafe.lunarconcerto.lyruis
 ```
 
-追加 `#<提交 SHA>` 可锁定版本。要求 Unity 2022.3+，依赖 uGUI（包已声明）。仓库是开发工程，安装包子目录不会安装开发工程中的 MCP 等工具。
+包标识为 `cafe.lunarconcerto.lyruis`，对应个人网站 [lunarconcerto.cafe](https://lunarconcerto.cafe)。追加 `#<提交 SHA>` 可锁定版本。要求 Unity 2022.3+，依赖 uGUI（包已声明）。仓库是开发工程，安装包子目录不会安装开发工程中的 MCP 等工具。
 
 ## 快速开始
 
@@ -68,7 +68,7 @@ public class PanelSetup : MonoBehaviour
 
 ## 检查器
 
-中英文检查器按布局、尺寸、间距与对齐分组，按模式显示字段，提供九宫格对齐、内边距关联、适应内容／固定当前尺寸和子节点注册。支持多对象编辑、Undo 及原生 Prefab 覆盖。详见[检查器指南](Packages/com.lunarconcerto.lyruis/Documentation~/inspector.md)。
+中英文检查器按布局、尺寸、间距与对齐分组，按模式显示字段，提供九宫格对齐、内边距关联、适应内容／固定当前尺寸和子节点注册。支持多对象编辑、Undo 及原生 Prefab 覆盖。详见[检查器指南](Packages/cafe.lunarconcerto.lyruis/Documentation~/inspector.md)。
 
 ## 布局与尺寸规则
 
@@ -108,19 +108,19 @@ Package Manager 的 Samples 可导入 Gallery 与 Benchmark。开发工程已导
 
 ## 架构、重写与迁移
 
-Runtime 拆分为 LyruisLayout（组件入口和层级事件）、LayoutScheduler（根请求合并）、LayoutTree（递归尺寸计算与变换写入）、LayoutEngine（几何排布）。Inspector 位于独立 Editor 程序集。详见[架构与迁移](Packages/com.lunarconcerto.lyruis/Documentation~/architecture.md)。
+Runtime 拆分为 LyruisLayout（组件入口和层级事件）、LayoutScheduler（根请求合并）、LayoutTree（递归尺寸计算与变换写入）、LayoutEngine（几何排布）。Inspector 位于独立 Editor 程序集。详见[架构与迁移](Packages/cafe.lunarconcerto.lyruis/Documentation~/architecture.md)。
 
 本次阅读归档实现以保留计算模型与布局语义，再以新的结构和代码实现。未引入原命名空间、公司专用辅助工具、日志和资源。这不是人员隔离的正式 clean-room 流程，也不构成权属许可声明。
 
-不提供旧组件和字段的自动迁移。请重建代表性 prefab 并验证外观。本次也修正了上一版 Lyruis 适配方案：需要显式注册子节点、Grid 不再拉伸子项、None 与 Overlay 分开、Keep 使用 sizeDelta。贡献时请提供 Unity 版本、最小复现和预期几何。参见[更新记录](Packages/com.lunarconcerto.lyruis/CHANGELOG.md)。
+不提供旧组件和字段的自动迁移。请重建代表性 prefab 并验证外观。本次也修正了上一版 Lyruis 适配方案：需要显式注册子节点、Grid 不再拉伸子项、None 与 Overlay 分开、Keep 使用 sizeDelta。贡献时请提供 Unity 版本、最小复现和预期几何。参见[更新记录](Packages/cafe.lunarconcerto.lyruis/CHANGELOG.md)。
 
 PlayMode tests: `LunarConcerto.Lyruis.PlayMode.Tests` (deferred sizing and root request coalescing / 延迟尺寸计算与根请求合并).
 
 ## Profiler 交互场景
 
-导入 **Profiler Lab**，打开 ProfilerLab.unity 后进入 Play。包含24张卡片、1,273个布局节点、6层嵌套、168个可变文本叶子，混合横竖排、Grid、Flow、None。屏幕按钮可切换静止、单叶子变化、批量变化、逐帧强制重建和根宽度变化；渲染和细粒度标记可分别切换。详见[Profiler 使用说明](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。开发菜单：Tools > Lyruis > Generate Profiler Lab Scene。
+导入 **Profiler Lab**，打开 ProfilerLab.unity 后进入 Play。包含24张卡片、1,273个布局节点、6层嵌套、168个可变文本叶子，混合横竖排、Grid、Flow、None。屏幕按钮可切换静止、单叶子变化、批量变化、逐帧强制重建和根宽度变化；渲染和细粒度标记可分别切换。详见[Profiler 使用说明](Packages/cafe.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。开发菜单：Tools > Lyruis > Generate Profiler Lab Scene。
 
-新增 **AUTO REPORT / Stop** 按钮和 **Tools > Lyruis > Run Automated Measurement** 菜单：自动执行五类负载的总耗时与阶段诊断双轮测试，输出原始 JSON、Markdown 表格及规则分析，无需打开 Profiler 录制。Editor 报告保存在 `BenchmarkResults/AutoMeasure`。详见[自动测量说明](Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。
+新增 **AUTO REPORT / Stop** 按钮和 **Tools > Lyruis > Run Automated Measurement** 菜单：自动执行五类负载的总耗时与阶段诊断双轮测试，输出原始 JSON、Markdown 表格及规则分析，无需打开 Profiler 录制。Editor 报告保存在 `BenchmarkResults/AutoMeasure`。详见[自动测量说明](Packages/cafe.lunarconcerto.lyruis/Samples~/ProfilerLab/README.md)。
 
 新增峰值扫描菜单 **Tools > Lyruis > Run Peak Sweep (Play Mode)**：覆盖637至4,241节点、六类负载，记录P95、观测Max及全量布局坐标。参见[优化前后对比](BenchmarkResults/PeakSweep/README.md)。本轮优化合并并跳过无变化的子节点变换写入，并按拓扑版本缓存根节点；尺寸与排布规则不变。
 

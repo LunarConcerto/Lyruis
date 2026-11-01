@@ -66,7 +66,7 @@ Detailed markers are controlled globally by `LyruisDiagnostics.DetailedProfiling
 
 ## Regenerate / 重新生成
 
-Development project: **Tools > Lyruis > Generate Profiler Lab Scene**. This recreates the sample scene asset. An open, unmodified Profiler Lab is replaced with the generated scene; regeneration rejects an open Lab with unsaved changes. Importable copies live under `Packages/com.lunarconcerto.lyruis/Samples~/ProfilerLab` and must be synchronized when regenerating for distribution.
+Development project: **Tools > Lyruis > Generate Profiler Lab Scene**. This recreates the sample scene asset. An open, unmodified Profiler Lab is replaced with the generated scene; regeneration rejects an open Lab with unsaved changes. Importable copies live under `Packages/cafe.lunarconcerto.lyruis/Samples~/ProfilerLab` and must be synchronized when regenerating for distribution.
 
 Visibility uses CanvasGroup instead of disabling Canvas: disabling Canvas can change the Canvas context used by legacy Text intrinsic sizing. 可见性通过 CanvasGroup.alpha 切换，避免禁用 Canvas 改变文本测量上下文；这不等同于关闭全部 UI CPU 开销。
 

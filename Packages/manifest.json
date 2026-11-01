@@ -40,6 +40,6 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "testables": [
-    "com.lunarconcerto.lyruis"
+    "cafe.lunarconcerto.lyruis"
   ]
 }
